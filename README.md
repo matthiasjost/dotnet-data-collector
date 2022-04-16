@@ -1,5 +1,5 @@
 # dotnet-data-collector
-Loading all the data from the dotnet-content-creators list
+This is just an experimental project to help collect fresh content from the creators listed in https://github.com/matthiasjost/dotnet-content-creators
 
 
 ## What should this collector do?
