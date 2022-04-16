@@ -28,7 +28,23 @@ namespace DataCollector.Services
                         string links = "";
                         foreach (Markdig.Extensions.Tables.TableCell tableCell in tableRow)
                         {
-                            var columnString = markdown.Substring(tableCell.Span.Start, tableCell.Span.End - tableCell.Span.Start);
+
+                            foreach(Block b in tableCell)
+                            {
+                                ParagraphBlock pb = (ParagraphBlock)b;
+
+                                foreach(Markdig.Syntax.Inlines.Inline inlineElement in pb.Inline)
+                                {
+                                    if(inlineElement is Markdig.Syntax.Inlines.LinkInline)
+                                    {
+                                        Markdig.Syntax.Inlines.LinkInline link = (Markdig.Syntax.Inlines.LinkInline)inlineElement;
+
+                                        Console.WriteLine($"'{link.Url}'");
+                                    }
+                                }
+                            }
+
+                            var columnString = markdown.Substring(tableCell.Span.Start, tableCell.Span.End - tableCell.Span.Start + 1);
                             if (columnIndex == 0)
                             {
                                 name = columnString;
@@ -39,7 +55,7 @@ namespace DataCollector.Services
                             }
                             columnIndex++;
                         }
-                        Console.WriteLine($"Name: '{name}', Links: '{links}'");
+                       //Console.WriteLine($"Name: '{name}', Links: '{links}'");
                     }
                 }
             }
