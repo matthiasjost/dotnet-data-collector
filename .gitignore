@@ -3,3 +3,9 @@
 ################################################################################
 
 /DataCollector/DataCollector.Console/bin/Debug/net6.0
+/DataCollector/DataCollector.Console/obj/Debug/net6.0
+/DataCollector/DataCollector.Services/obj
+/DataCollector/DataCollector.Console/obj
+/DataCollector/.vs/DataCollector/DesignTimeBuild
+/DataCollector/.vs/DataCollector/v17
+/DataCollector/DataCollector.Services/bin/Debug/netstandard2.0
