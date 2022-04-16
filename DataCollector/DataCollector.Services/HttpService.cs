@@ -15,13 +15,11 @@ namespace DataCollector.Services
 
         public HttpService()
         {
-
         }
 
         public void Open()
         {
             _httpClient = new HttpClient();
-
         }
 
         public async Task<bool> TryUrlToString()
@@ -32,7 +30,6 @@ namespace DataCollector.Services
                 ResponseString = await ResponseMessage.Content.ReadAsStringAsync();
             }
             catch (Exception ex)
-
             {
                 return false;
             }

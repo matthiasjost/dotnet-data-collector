@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Markdig;
-using Markdig.Syntax;
-using Markdig.Extensions;
+
 
 namespace DataCollector.Services
 {
@@ -23,25 +21,9 @@ namespace DataCollector.Services
             bool succesful = await httpService.TryUrlToString();
             var markstring = httpService.ResponseString;
 
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            var markdownService = new MarkdownService();
 
-            MarkdownDocument document = Markdown.Parse(httpService.ResponseString, pipeline);
-
-            foreach (var d in document)
-            {
-                if (d is Markdig.Extensions.Tables.Table)
-                {
-                    var table = (Markdig.Extensions.Tables.Table)d;
-
-                    foreach (Markdig.Extensions.Tables.TableRow tableRow in table)
-                    {
-                        foreach(Markdig.Extensions.Tables.TableCell tableCell in tableRow)
-                        {
-                            Console.WriteLine(markstring.Substring(tableCell.Span.Start, tableCell.Span.End - tableCell.Span.Start));
-                        }
-                    }
-                }
-            }
+            markdownService.ParseMarkdown(markstring);
         }
     }
 }
