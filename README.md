@@ -1,7 +1,8 @@
 # dotnet-data-collector
 Loading all the data from the dotnet-content-creators list
 
-# Steps
+
+## What should this collector do?
 
 1. Load the readme file
 2. Parse the readme file with Markdig
