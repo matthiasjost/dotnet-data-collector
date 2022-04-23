@@ -23,7 +23,7 @@ namespace DataCollector.Services
 
             var markdownService = new MarkdownService();
 
-            markdownService.ParseMarkdown(markstring);
+            markdownService.ProcessMarkdownDocument(markstring);
         }
     }
 }
