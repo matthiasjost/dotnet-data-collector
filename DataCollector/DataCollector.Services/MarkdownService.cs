@@ -53,32 +53,42 @@ namespace DataCollector.Services
         {
             if (block is ParagraphBlock)
             {
-                ParagraphBlock paragraphBlock = (ParagraphBlock)block;
+                ProcessParagraphBlock((ParagraphBlock)block);
+            }
+        }
+        public void ProcessParagraphBlock(ParagraphBlock paragraphBlock)
+        {
+            foreach (Markdig.Syntax.Inlines.Inline inlineElement in paragraphBlock.Inline)
+            {
+                ProcessInLineElement(inlineElement);
+            }
 
-                foreach (Markdig.Syntax.Inlines.Inline inlineElement in paragraphBlock.Inline)
-                {
-                    if (inlineElement is Markdig.Syntax.Inlines.LinkInline)
-                    {
-                        Markdig.Syntax.Inlines.LinkInline linkInLineELement = (Markdig.Syntax.Inlines.LinkInline)inlineElement;
-                        ProcessLinkInLine(linkInLineELement);
-                    }
-                    else if (inlineElement is Markdig.Syntax.Inlines.Inline)
-                    {
-                        Markdig.Syntax.Inlines.Inline inline = (Markdig.Syntax.Inlines.Inline)inlineElement;
-                        ProcessInLineElement(inline);
+        }
 
-                    }
-                }
+               
+        public void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElement)
+        {
+            if (inLineElement is Markdig.Syntax.Inlines.LinkInline)
+            {
+                Markdig.Syntax.Inlines.LinkInline linkInLineELement = (Markdig.Syntax.Inlines.LinkInline)inLineElement;
+                Console.WriteLine($"'{linkInLineELement.Url}'");
+            }
+            else if(inLineElement is Markdig.Syntax.Inlines.LiteralInline)
+            {
+                Markdig.Syntax.Inlines.LiteralInline literalInLine = (Markdig.Syntax.Inlines.LiteralInline)inLineElement;
+
+                string literalValue = literalInLine.Content.Text.Substring(literalInLine.Content.Start, literalInLine.Content.End - literalInLine.Content.Start + 1);
+                Console.WriteLine($"'{literalValue}'");
             }
         }
         public void ProcessLinkInLine(Markdig.Syntax.Inlines.LinkInline linkInLineELement)
         {
-            Console.WriteLine($"'{linkInLineELement.Url}'");
+ 
         }
-        public void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElmement)
+        /*public void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElmement)
         {
             var text = InputMarkdownString.Substring(inLineElmement.Span.Start, inLineElmement.Span.End - inLineElmement.Span.Start + 1);
             Console.WriteLine($"'{text}'");
-        }
+        }*/
     }
 }
