@@ -26,36 +26,29 @@ namespace DataCollector.Services
         public List<RowDto> Rows { get; set; }
     }
 
-    public class MarkdownService
+    public class MarkdownTableService
     {
 
-        List<TableDto> TableList = new List<TableDto>();
+        public List<TableDto> TableList = new List<TableDto>();
+        private int TableNumber { get; set; }
+        private int TableRowNumber { get; set; }
+        private int TableCellNumber { get; set; }
 
-
-        public int TableNumber { get; set; }
-
-        public int TableRowNumber { get; set; }
-        public int TableCellNumber { get; set; }
-
-        public void NextRow()
+        private void NextRow()
         {
             TableRowNumber++;
             TableCellNumber = 0;
-            Console.WriteLine($"TableRowNumber: {TableRowNumber}");
-
             TableList[TableNumber - 1].Rows.Add(new RowDto());
             TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells = new List<CellDto>();
 
         }
-        public void NextTableCell()
+        private void NextTableCell()
         {
             TableCellNumber++;
-            Console.WriteLine($"TableCellNumber: {TableCellNumber}");
             TableList[TableNumber - 1].Rows[TableRowNumber-1].Cells.Add(new CellDto());
         }
-        public void NextTable()
+        private void NextTable()
         {
-            TableList.Add(new TableDto());
             TableRowNumber = 0;
             TableCellNumber = 0;
             TableNumber++;
@@ -66,7 +59,7 @@ namespace DataCollector.Services
         }
 
         public string InputMarkdownString { get; set; }
-        public void ProcessMarkdownDocument(string markdown)
+        public void GenerateTableByMarkdownString(string markdown)
         {
             InputMarkdownString = markdown;
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
@@ -82,7 +75,7 @@ namespace DataCollector.Services
                 }
             }
         }
-        public void ProcessTable(Markdig.Extensions.Tables.Table table)
+        private void ProcessTable(Markdig.Extensions.Tables.Table table)
         {
             NextTable();
             foreach (Markdig.Extensions.Tables.TableRow tableRow in table)
@@ -90,7 +83,7 @@ namespace DataCollector.Services
                 ProcessTableRow(tableRow);
             }
         }
-        public void ProcessTableRow(Markdig.Extensions.Tables.TableRow tableRow)
+        private void ProcessTableRow(Markdig.Extensions.Tables.TableRow tableRow)
         {
             NextRow();
             foreach (Markdig.Extensions.Tables.TableCell currentTableCell in tableRow)
@@ -98,7 +91,7 @@ namespace DataCollector.Services
                 ProcessTableCell(currentTableCell);
             }
         }
-        public void ProcessTableCell(Markdig.Extensions.Tables.TableCell tableCell)
+        private void ProcessTableCell(Markdig.Extensions.Tables.TableCell tableCell)
         {
             NextTableCell();
             foreach (Block currentBlock in tableCell)
@@ -106,14 +99,14 @@ namespace DataCollector.Services
                 ProcessTableBlock(currentBlock);
             }
         }
-        public void ProcessTableBlock(Block block)
+        private void ProcessTableBlock(Block block)
         {
             if (block is ParagraphBlock)
             {
                 ProcessParagraphBlock((ParagraphBlock)block);
             }
         }
-        public void ProcessParagraphBlock(ParagraphBlock paragraphBlock)
+        private void ProcessParagraphBlock(ParagraphBlock paragraphBlock)
         {
             foreach (Markdig.Syntax.Inlines.Inline inlineElement in paragraphBlock.Inline)
             {
@@ -121,7 +114,7 @@ namespace DataCollector.Services
             }
 
         }
-        public void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElement)
+        private void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElement)
         {
             if (inLineElement is Markdig.Syntax.Inlines.LinkInline)
             {

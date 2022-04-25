@@ -21,9 +21,9 @@ namespace DataCollector.Services
             bool succesful = await httpService.TryUrlToString();
             var markstring = httpService.ResponseString;
 
-            var markdownService = new MarkdownService();
+            var markdownService = new MarkdownTableService();
 
-            markdownService.ProcessMarkdownDocument(markstring);
+            markdownService.GenerateTableByMarkdownString(markstring);
         }
     }
 }
