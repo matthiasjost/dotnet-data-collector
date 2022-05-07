@@ -57,9 +57,9 @@ namespace DataCollector.Services
                             }
                             else if (cell.ColumnIndex == 1)
                             {
+                                creator.Urls = new List<string>();
                                 foreach (LinkDto link in cell.Links)
                                 {
-                                    creator.Urls = new List<string>();
                                     creator.Urls.Add(link.Url);
                                 }
                             }

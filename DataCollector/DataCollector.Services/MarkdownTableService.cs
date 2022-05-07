@@ -15,8 +15,8 @@ namespace DataCollector.Services
     public class Cell
     {
         public int ColumnIndex { get; set; }
-        public List<string> TextLiterals = new List<string>();
-        public List<LinkDto> Links = new List<LinkDto>();
+        public List<string> TextLiterals { get; set; } = new List<string>();
+        public List<LinkDto> Links {  get; set; }
 
         public Cell(int columnIndex)
         {
@@ -57,6 +57,15 @@ namespace DataCollector.Services
         private int TableRowNumber { get; set; }
         private int TableCellNumber { get; set; }
 
+        private void NextTable()
+        {
+            TableRowNumber = 0;
+            TableCellNumber = 0;
+            TableNumber++;
+            TableList.Add(new TableDto());
+            TableList[TableNumber - 1].Rows = new List<RowDto>();
+
+        }
         private void NextRow()
         {
             TableRowNumber++;
@@ -70,15 +79,7 @@ namespace DataCollector.Services
             TableCellNumber++;
             TableList[TableNumber - 1].Rows[TableRowNumber-1].Cells.Add(new Cell(TableCellNumber-1));
         }
-        private void NextTable()
-        {
-            TableRowNumber = 0;
-            TableCellNumber = 0;
-            TableNumber++;
-            TableList.Add(new TableDto());
-            TableList[TableNumber - 1].Rows = new List<RowDto>();
 
-        }
 
         public string InputMarkdownString { get; set; }
         public void GenerateTableByMarkdownString(string markdown)
