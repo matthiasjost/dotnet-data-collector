@@ -12,6 +12,8 @@ namespace DataCollector.Services
         public CreatorList AllCreatorLinks { get; set; } = new CreatorList();
         public async Task Run()
         {
+
+            
             var httpService = new HttpService();
             httpService.Open();
             httpService.Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md";
@@ -22,6 +24,10 @@ namespace DataCollector.Services
             FillCreatorListByMarkDownServiceTable(markdownService.TableList);
 
             PrintCreators();
+
+            var youTubeService = new YouTubeServiceHelper();
+            youTubeService.GetVideo();
+
         }
 
         public void PrintCreators()

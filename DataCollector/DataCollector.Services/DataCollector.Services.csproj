@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <UserSecretsId>75800507-6520-4508-a931-1a5e23e2d534</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2665" />
     <PackageReference Include="Markdig" Version="0.28.1" />
   </ItemGroup>
 
