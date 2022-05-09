@@ -4,9 +4,9 @@ using System.Text;
 
 namespace DataCollector.Services
 {
-    public class CreatorItem
+    public class YouTubeChannel
     {
-        public string Name { get; set; }
-        public List<string> Urls { get; set; }
+        string UserName { get; set; }
+        string Url { get; set; }
     }
 }

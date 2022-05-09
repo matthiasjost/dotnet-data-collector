@@ -23,6 +23,7 @@ namespace DataCollector.Services
             markdownService.GenerateTableByMarkdownString(markstring);
             FillCreatorListByMarkDownServiceTable(markdownService.TableList);
 
+
             PrintCreators();
 
             var youTubeService = new YouTubeServiceHelper();
@@ -32,7 +33,7 @@ namespace DataCollector.Services
 
         public void PrintCreators()
         {
-            foreach (CreatorItem creator in AllCreatorLinks.List)
+            foreach (Creator creator in AllCreatorLinks.List)
             {
                 Console.Write(creator.Name);
                 foreach (string url in creator.Urls)
@@ -45,7 +46,7 @@ namespace DataCollector.Services
 
         public void FillCreatorListByMarkDownServiceTable(List<TableDto> markDownServiceTable)
         {
-            AllCreatorLinks.List = new List<CreatorItem>();
+            AllCreatorLinks.List = new List<Creator>();
 
             foreach (TableDto table in markDownServiceTable)
             {
@@ -53,7 +54,7 @@ namespace DataCollector.Services
                 {
                     if (row.RowIndex != 0)
                     {
-                        var creator = new CreatorItem();
+                        var creator = new Creator();
 
                         foreach (Cell cell in row.Cells)
                         {

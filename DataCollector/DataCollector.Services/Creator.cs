@@ -4,8 +4,9 @@ using System.Text;
 
 namespace DataCollector.Services
 {
-    public class CreatorList
+    public class Creator
     {
-        public List<Creator> List { get; set; }
+        public string Name { get; set; }
+        public List<string> Urls { get; set; }
     }
 }
