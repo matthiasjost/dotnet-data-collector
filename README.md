@@ -1,9 +1,44 @@
-# dotnet-data-collector
-This is just an experimental project to help collect fresh content from the creators listed in https://github.com/matthiasjost/dotnet-content-creators
+
+# 🗞️ .NET Data Collector
 
 
-## What should this collector do?
+The dotnet data collector is an application collecting information about content creation channels from this [list](https://github.com/matthiasjost/dotnet-content-creators).
 
-1. Load the readme file
-2. Parse the readme file with Markdig
-3. Extract all the creators ant the respective links
+The list is a markdown file with a list of curated dotnet content creators publishing content in English and must have published something in 2022 already.
+
+## 🎨 Project Goals
+
+* Detect broken links on the dontent content creator markdown list.
+* Keep the original list clean and simple and easy to extend: Use the .NET Data Collector to enrich the data from the markdown list and store it into a MongoDB.
+* The additionally collected data is stored inside a Database which includes:
+  * A represantation of the whole markdnown structure: Creator Names, respective country and channel Urls.
+  * The RSS feed extracted from the channel HTML 
+
+## :octocat: Data Parsed From the Original Markdown File
+
+This table descirbes everything that can be directly parsed from the original dotnetn content creator list.
+
+| Subject  | Data Parsed |
+| ------------- | ------------- |
+| Channel | URL, "Type"
+| Creator | Name, Country
+
+
+## 🐙 Aggregated Data
+
+This table contains a description of everything that should be added/enriched to the orginally parsed data by this tool.
+
+| Subject  | Data Aggregated / Extracted |
+| ------------- | ------------- |
+| Channel | Last 200 OK HTTP Response Code Time, RSS URL
+| Creator | Nothing
+| Content | All RSS items 
+
+## ✔️ Features
+
+Just playing with ideas here:
+- Web interface showing all the new RSS items
+- Maintenance of the list (broken link check)
+
+
+
