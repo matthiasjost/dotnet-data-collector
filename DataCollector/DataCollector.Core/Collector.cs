@@ -4,16 +4,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using DataCollector.Services;
+using DataCollector.Data;
 
 namespace DataCollector.Core
 {
-    public class Collector
+    public class Collector : ICollector
     {
-        public Collector()
-        {
+        ICreatorRepository _creatorRepository;
 
+        public Collector(ICreatorRepository creatorRepository)
+        {
+            _creatorRepository = creatorRepository;
         }
-        public CreatorList AllCreatorLinks { get; set; } = new CreatorList();
+        private CreatorList AllCreatorLinks { get; set; } = new CreatorList();
         public async Task Run()
         {
             var httpService = new HttpService();
@@ -33,7 +36,21 @@ namespace DataCollector.Core
 
         }
 
-        public void PrintCreators()
+        private void AddCreatorsToDb()
+        {
+            foreach (Creator creator in AllCreatorLinks.List)
+            {
+                Console.Write(creator.Name);
+                foreach (string url in creator.Urls)
+                {
+                    _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
+                    Console.Write($" '{url}'");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PrintCreators()
         {
             foreach (Creator creator in AllCreatorLinks.List)
             {
@@ -46,7 +63,7 @@ namespace DataCollector.Core
             }
         }
 
-        public void FillCreatorListByMarkDownServiceTable(List<TableDto> markDownServiceTable)
+        private void FillCreatorListByMarkDownServiceTable(List<TableDto> markDownServiceTable)
         {
             AllCreatorLinks.List = new List<Creator>();
 

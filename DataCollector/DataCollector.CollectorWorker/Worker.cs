@@ -6,25 +6,22 @@ namespace DataCollector.CollectorWorker
     public class CollectorWorker : BackgroundService
     {
         private readonly ILogger<CollectorWorker> _logger;
-        private readonly Collector _collector;
+        private readonly ICollector _collector;
         private IConfiguration _configuration;
         private IMongoDbSettings _mongoDbSettings;
 
-        public CollectorWorker(ILogger<CollectorWorker> logger, IConfiguration configuration, IMongoDbSettings mongoDbSettings)
+        public CollectorWorker(ILogger<CollectorWorker> logger, 
+            IConfiguration configuration, IMongoDbSettings mongoDbSettings, ICollector collector)
         {
             _logger = logger;
             _configuration = configuration;
             _configuration = configuration;
-            _collector = new Collector();
+            _collector = collector;
             _mongoDbSettings = mongoDbSettings;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _mongoDbSettings.CreatorCollectionName = _configuration["MongoDbSetttings:CreatorCollectionName"];
-            _mongoDbSettings.DatabaseName = _configuration["MongoDbSetttings:DatabaseName"];
-            _mongoDbSettings.ConnectionString = _configuration["MongoDbSetttings:ConnectionString"];
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

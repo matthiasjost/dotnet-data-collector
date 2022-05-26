@@ -1,6 +1,7 @@
 using DataCollector.CollectorWorker;
 using DataCollector.Data;
 using Microsoft.Extensions.Configuration;
+using DataCollector.Core;
 
 namespace Company.WebApplication1
 {
@@ -15,7 +16,7 @@ namespace Company.WebApplication1
                     services.AddHostedService<CollectorWorker>();
                     services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
                     services.AddSingleton<ICreatorRepository, CreatorRepository>();
-
+                    services.AddSingleton<ICollector, Collector>();
                 })
                 .Build();
 
