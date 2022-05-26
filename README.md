@@ -20,23 +20,21 @@ The list is a markdown file with a list of curated dotnet content creators publi
 
 ### Data extracted directly from the list
 
-Channel:
-* URL of the channel 
+| Subject  | Data |
+| ------------- | ------------- |
+| Channel | URL, "Type"
+| Creator | Name, Country
 
-Creator:
-* Name of the creator
-* Country of the creator
 
 ### Data aggregated by the .NET Data Collector
 
-Channel:
-* Broken Link Checker
-* HTML: Extract RSS URL
+| Subject  | Data |
+| ------------- | ------------- |
+| Channel | Last 200 OK HTTP Response Code Time, RSS URL
+| Creator | Nothing
+| Content | All RSS items 
 
-Creator:
-* Nothing
 
-Content:
-* New Items in their RSS feed
+
 
 
