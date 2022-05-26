@@ -39,7 +39,6 @@ This table contains a description of everything that should be added/enriched to
 Just playing with ideas here:
 - Web interface showing all the new RSS items
 - Full Text search on all the items
-- Use Web scraping to collect everything for the full text search
 
 
 
