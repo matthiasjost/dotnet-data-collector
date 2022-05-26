@@ -18,7 +18,7 @@ The list is a markdown file with a list of curated dotnet content creators publi
 
 ## Implementation
 
-### Data extracted directly from the list
+### Extracted Data (Parse the Markdown file)
 
 | Subject  | Data |
 | ------------- | ------------- |
@@ -26,7 +26,7 @@ The list is a markdown file with a list of curated dotnet content creators publi
 | Creator | Name, Country
 
 
-### Data aggregated by the .NET Data Collector
+### Aggregated Data (Data enriched by this tool)
 
 | Subject  | Data |
 | ------------- | ------------- |
