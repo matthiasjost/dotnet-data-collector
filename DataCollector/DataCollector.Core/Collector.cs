@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using DataCollector.Services;
 
-
-namespace DataCollector.Services
+namespace DataCollector.Core
 {
     public class Collector
     {
         public CreatorList AllCreatorLinks { get; set; } = new CreatorList();
         public async Task Run()
         {
-
-            
             var httpService = new HttpService();
             httpService.Open();
             httpService.Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md";

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Services", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Console", "DataCollector.Console\DataCollector.Console.csproj", "{C1543F88-BB7B-4D58-9F0B-E2B3045A77F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector.Core", "DataCollector.Core\DataCollector.Core.csproj", "{2540BCC6-8DC7-474D-83A9-FDD44A023E5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C1543F88-BB7B-4D58-9F0B-E2B3045A77F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1543F88-BB7B-4D58-9F0B-E2B3045A77F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1543F88-BB7B-4D58-9F0B-E2B3045A77F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2540BCC6-8DC7-474D-83A9-FDD44A023E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2540BCC6-8DC7-474D-83A9-FDD44A023E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2540BCC6-8DC7-474D-83A9-FDD44A023E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2540BCC6-8DC7-474D-83A9-FDD44A023E5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

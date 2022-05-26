@@ -19,7 +19,7 @@ namespace DataCollector.Services
             {
                 var youTubeService = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBAlcvuUyXwLQf_bEX6Sh4Cj - EAcZVNfDg" });
 
-
+ 
                 var channelsListRequest = youTubeService.Channels.List("contentDetails");
                 channelsListRequest.ForUsername = "binarythistle";
 

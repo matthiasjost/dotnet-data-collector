@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataCollector.Services
+namespace DataCollector.Core
 {
     public class Creator
     {

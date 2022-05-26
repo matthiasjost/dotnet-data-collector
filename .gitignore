@@ -9,3 +9,7 @@
 /DataCollector/.vs/DataCollector/DesignTimeBuild
 /DataCollector/.vs/DataCollector/v17
 /DataCollector/DataCollector.Services/bin/Debug/netstandard2.0
+/DataCollector/DataCollector.Core/bin/*
+/DataCollector/DataCollector.Core/obj/*
+/DataCollector/.vs/ProjectEvaluation/datacollector.metadata.v2
+/DataCollector/.vs/ProjectEvaluation/datacollector.projects.v2
