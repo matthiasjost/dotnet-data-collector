@@ -14,5 +14,7 @@ namespace DataCollector.Data
         public void Update(string id, CreatorDbItem creator);
         public void Remove(CreatorDbItem creator);
         public void Remove(string id);
+
+        public Task<CreatorDbItem> FindFirstWithName(string name);
     }
 }

@@ -37,14 +37,20 @@ namespace DataCollector.Core
 
         }
 
-        private void AddCreatorsToDb()
+        private async void AddCreatorsToDb()
         {
             foreach (Creator creator in AllCreatorLinks.List)
             {
                 Console.Write(creator.Name);
                 foreach (string url in creator.Urls)
                 {
-                    _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
+                    CreatorDbItem creatorFound = await _creatorRepository.FindFirstWithName(creator.Name);
+
+                    if(creatorFound == null)
+                    {
+                        _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
+                    }
+   
                     Console.Write($" '{url}'");
                 }
                 Console.WriteLine();
