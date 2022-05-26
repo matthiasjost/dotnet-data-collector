@@ -14,3 +14,7 @@
 /DataCollector/.vs/ProjectEvaluation/datacollector.metadata.v2
 /DataCollector/.vs/ProjectEvaluation/datacollector.projects.v2
 /DataCollector/.vs/DataCollector/FileContentIndex/*
+/DataCollector/DataCollector.CollectorWorker/bin/*
+/DataCollector/DataCollector.CollectorWorker/obj/*
+/DataCollector/DataCollector.Worker/obj/*
+/DataCollector/DataCollector.Data/obj/project.nuget.cache
