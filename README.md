@@ -14,7 +14,7 @@ The list is a markdown file with a list of curated dotnet content creators publi
   * A represantation of the whole markdnown structure: Creator Names, respective country and channel Urls.
   * The RSS feed extracted from the channel HTML 
 
-## :octocat: Extracted Data 
+## :octocat: Data Parsed From the Original Markdown File
 
 This table descirbes everything that can be directly parsed from the original dotnetn content creator list.
 
