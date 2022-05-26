@@ -22,3 +22,4 @@
 /DataCollector/DataCollector.Data/bin/*
 /DataCollector/DataCollector.Data/obj/*
 /DataCollector/DataCollector.Data/obj/Debug/net6.0/DataCollector.Data.csproj.AssemblyReference.cache
+/DataCollector/DataCollector.Data/obj/*

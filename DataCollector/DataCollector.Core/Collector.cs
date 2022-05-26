@@ -30,6 +30,7 @@ namespace DataCollector.Core
 
 
             PrintCreators();
+            AddCreatorsToDb();
 
             var youTubeService = new YouTubeServiceHelper();
             youTubeService.GetVideo();
