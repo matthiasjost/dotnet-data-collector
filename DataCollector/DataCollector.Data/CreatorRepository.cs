@@ -4,39 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DataCollector.Data
 {
-    public class CreatorRepository
+    public class CreatorRepository : ICreatorRepository
     {
         private readonly IMongoCollection<CreatorDbItem> _creatorCollection;
 
-        public ClientStatsService(IW3CLogStatsDatabase settings)
+        public CreatorRepository(IMongoDbSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _creatorCollection = database.GetCollection<CreatorDbItem>(settings.ClientStatsCollectionName);
+            _creatorCollection = database.GetCollection<CreatorDbItem>(settings.CreatorCollectionName);
         }
 
         public List<CreatorDbItem> Get() =>
             _creatorCollection.Find(stat => true).ToList();
 
-        public ClientStats Get(string id) =>
-            _creatorCollection.Find<ClientStats>(stat => stat.Id == id).FirstOrDefault();
+        public CreatorDbItem Get(string id) =>
+            _creatorCollection.Find<CreatorDbItem>(stat => stat.Id == id).FirstOrDefault();
 
-        public ClientStats Create(ClientStats stat)
+        public CreatorDbItem Create(CreatorDbItem creator)
         {
-            _creatorCollection.InsertOne(stat);
-            return stat;
+            _creatorCollection.InsertOne(creator);
+            return creator;
         }
-        public void Update(string id, ClientStats statIn) =>
-            _creatorCollection.ReplaceOne(stat => stat.Id == id, statIn);
+        public void Update(string id, CreatorDbItem creator) =>
+            _creatorCollection.ReplaceOne(creator => creator.Id == id, creator);
 
-        public void Remove(ClientStats statIn) =>
-            _creatorCollection.DeleteOne(stat => stat.Id == statIn.Id);
+        public void Remove(CreatorDbItem creator) =>
+            _creatorCollection.DeleteOne(creator => creator.Id == creator.Id);
 
         public void Remove(string id) =>
-            _creatorCollection.DeleteOne(stat => stat.Id == id);
+            _creatorCollection.DeleteOne(creator => creator.Id == id);
     }
 }

@@ -9,6 +9,10 @@ namespace DataCollector.Core
 {
     public class Collector
     {
+        public Collector()
+        {
+
+        }
         public CreatorList AllCreatorLinks { get; set; } = new CreatorList();
         public async Task Run()
         {
