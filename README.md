@@ -9,7 +9,7 @@ The list is a markdown file with a list of curated dotnet content creators publi
 ## 🎨 Project Goals
 
 * Detect broken links on the dontent content creator markdown list.
-* Keep the original list clean and simple and easy to extend: Use the .NET Data Collector to enrich the data from the markdown list.
+* Keep the original list clean and simple and easy to extend: Use the .NET Data Collector to enrich the data from the markdown list and store it into a MongoDB.
 * The additionally collected data is stored inside a Database which includes:
   * A represantation of the whole markdnown structure: Creator Names, respective country and channel Urls.
   * The RSS feed extracted from the channel HTML 
