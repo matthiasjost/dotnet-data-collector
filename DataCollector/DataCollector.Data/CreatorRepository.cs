@@ -13,7 +13,7 @@ namespace DataCollector.Data
     public class CreatorRepository : ICreatorRepository
     {
         private readonly IMongoCollection<CreatorDbItem> _creatorCollection;
-        private IMongoQueryable<CreatorDbItem> _queryableMongoCreatorCollection;
+        private readonly IMongoQueryable<CreatorDbItem> _queryableCreators;
 
         public CreatorRepository(IMongoDbSettings settings)
         {
@@ -21,23 +21,21 @@ namespace DataCollector.Data
             var database = client.GetDatabase(settings.DatabaseName);
 
             _creatorCollection = database.GetCollection<CreatorDbItem>(settings.CreatorCollectionName);
-
-            _queryableMongoCreatorCollection = _creatorCollection.AsQueryable();
+            _queryableCreators = _creatorCollection.AsQueryable();
         }
 
         public async Task<CreatorDbItem> FindFirstWithName(string name)
         {
-            var creatorDbItem = await _queryableMongoCreatorCollection
-                .Where<CreatorDbItem>(creator => creator.Name.StartsWith(name))
-                .FirstOrDefaultAsync();
+            var creatorDbItem = await _queryableCreators
+                .Where<CreatorDbItem>(c => c.Name == name).FirstOrDefaultAsync();
 
             return creatorDbItem;
         }
         public List<CreatorDbItem> Get() =>
-            _creatorCollection.Find(stat => true).ToList();
+            _creatorCollection.Find(c => true).ToList();
 
         public CreatorDbItem Get(string id) =>
-            _creatorCollection.Find<CreatorDbItem>(stat => stat.Id == id).FirstOrDefault();
+            _creatorCollection.Find<CreatorDbItem>(c => c.Id == id).FirstOrDefault();
 
         public CreatorDbItem Create(CreatorDbItem creator)
         {
@@ -45,12 +43,12 @@ namespace DataCollector.Data
             return creator;
         }
         public void Update(string id, CreatorDbItem creator) =>
-            _creatorCollection.ReplaceOne(creator => creator.Id == id, creator);
+            _creatorCollection.ReplaceOne(c => c.Id == id, creator);
 
         public void Remove(CreatorDbItem creator) =>
-            _creatorCollection.DeleteOne(creator => creator.Id == creator.Id);
+            _creatorCollection.DeleteOne(c => c.Id == creator.Id);
 
         public void Remove(string id) =>
-            _creatorCollection.DeleteOne(creator => creator.Id == id);
+            _creatorCollection.DeleteOne(c => c.Id == id);
     }
 }

@@ -17,14 +17,8 @@ namespace Company.WebApplication1
                     services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
                     services.AddSingleton<ICreatorRepository, CreatorRepository>();
                     services.AddSingleton<ICollector, Collector>();
-                   
-
-      
                 })
                 .Build();
-
-
-
             host.Run();
         }
     }
