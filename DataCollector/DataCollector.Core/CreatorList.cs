@@ -29,6 +29,10 @@ namespace DataCollector.Core
                     {
                         _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
                     }
+                    else
+                    {
+                        
+                    }
                     Console.Write($" '{url}'");
                 }
                 Console.WriteLine();

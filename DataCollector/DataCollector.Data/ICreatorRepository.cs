@@ -11,9 +11,9 @@ namespace DataCollector.Data
         Task<CreatorDbItem> FindFirstByName(string name);
         Task<CreatorDbItem> FindFirstById(string id);
         Task<List<CreatorDbItem>> GetAllItems();
-        void Create(CreatorDbItem creator);
-        void UpdateById(string id, CreatorDbItem creator);
-        void RemoveById(string id);
+        Task Create(CreatorDbItem creator);
+        Task UpdateById(string id, CreatorDbItem creator);
+        Task RemoveById(string id);
     }
 
 }

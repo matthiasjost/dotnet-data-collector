@@ -15,7 +15,6 @@ namespace DataCollector.Core
         {
             _creatorRepository = creatorRepository;
         }
-
         public async Task Run()
         {
             var httpService = new HttpService
@@ -38,7 +37,6 @@ namespace DataCollector.Core
 
             var youTubeService = new YouTubeServiceHelper();
             youTubeService.GetVideo();
-
         }
     }
 }

@@ -40,15 +40,15 @@ namespace DataCollector.Data
         {
             return await _queryableCreators.ToListAsync();
         }
-        public async void Create(CreatorDbItem creator)
+        public async Task Create(CreatorDbItem creator)
         {
             await _creatorCollection.InsertOneAsync(creator);
         }
-        public async void UpdateById(string id, CreatorDbItem creator)
+        public async Task UpdateById(string id, CreatorDbItem creator)
         {
             await _creatorCollection.ReplaceOneAsync(c => c.Id == id, creator);
         }
-        public async void RemoveById(string id)
+        public async Task RemoveById(string id)
         {
             await _creatorCollection.DeleteOneAsync(c => c.Id == id);
         }
