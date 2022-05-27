@@ -7,17 +7,11 @@ namespace DataCollector.Services
     public class HttpService
     {
         private HttpClient _httpClient { get; set; }
-
         public string Url { get; set; }
         public string ResponseString { get; set; }
-
         HttpResponseMessage ResponseMessage { get; set; }
 
         public HttpService()
-        {
-        }
-
-        public void Open()
         {
             _httpClient = new HttpClient();
         }

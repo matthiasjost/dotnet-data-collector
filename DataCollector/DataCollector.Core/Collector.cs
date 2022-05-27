@@ -15,91 +15,30 @@ namespace DataCollector.Core
         {
             _creatorRepository = creatorRepository;
         }
-        private CreatorList AllCreatorLinks { get; set; } = new CreatorList();
+
         public async Task Run()
         {
-            var httpService = new HttpService();
-            httpService.Open();
-            httpService.Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md";
-            bool successful = await httpService.TryUrlToString();
-            var markstring = httpService.ResponseString;
+            var httpService = new HttpService
+            {
+                Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md"
+            };
+
+            if (await httpService.TryUrlToString() == false)
+            {
+                
+            }
+
             var markdownService = new MarkdownTableService();
-            markdownService.GenerateTableByMarkdownString(markstring);
-            FillCreatorListByMarkDownServiceTable(markdownService.TableList);
+            markdownService.GenerateTableByMarkdownString(httpService.ResponseString);
 
-
-            PrintCreators();
-            AddCreatorsToDb();
+            var creatorList = new CreatorList(_creatorRepository);
+            creatorList.FillByTable(markdownService.TableList);
+            creatorList.PrintCreators();
+            creatorList.AddCreatorsToDb();
 
             var youTubeService = new YouTubeServiceHelper();
             youTubeService.GetVideo();
 
-        }
-
-        private async void AddCreatorsToDb()
-        {
-            foreach (Creator creator in AllCreatorLinks.List)
-            {
-                Console.Write(creator.Name);
-                foreach (string url in creator.Urls)
-                {
-                    CreatorDbItem creatorFound = await _creatorRepository.FindFirstByName(creator.Name);
-
-                    if(creatorFound == null)
-                    {
-                        _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
-                    }
-                    Console.Write($" '{url}'");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        private void PrintCreators()
-        {
-            foreach (Creator creator in AllCreatorLinks.List)
-            {
-                Console.Write(creator.Name);
-                foreach (string url in creator.Urls)
-                {
-                    Console.Write($" '{url}'");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        private void FillCreatorListByMarkDownServiceTable(List<TableDto> markDownServiceTable)
-        {
-            AllCreatorLinks.List = new List<Creator>();
-
-            foreach (TableDto table in markDownServiceTable)
-            {
-                foreach (RowDto row in table.Rows)
-                {
-                    if (row.RowIndex != 0)
-                    {
-                        var creator = new Creator();
-
-                        foreach (Cell cell in row.Cells)
-                        {
-                            if (cell.ColumnIndex == 0)
-                            {
-                                creator.Name = cell.GetPlainText();
-                            }
-                            else if (cell.ColumnIndex == 1)
-                            {
-                                creator.Urls = new List<string>();
-                                foreach (LinkDto link in cell.Links)
-                                {
-                                    creator.Urls.Add(link.Url);
-                                }
-                            }
-                        }
-
-                        AllCreatorLinks.List.Add(creator);
-                    }
-                }
-            }
         }
     }
 }
