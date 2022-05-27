@@ -23,32 +23,34 @@ namespace DataCollector.Data
             _creatorCollection = database.GetCollection<CreatorDbItem>(settings.CreatorCollectionName);
             _queryableCreators = _creatorCollection.AsQueryable();
         }
-
-        public async Task<CreatorDbItem> FindFirstWithName(string name)
+        public async Task<CreatorDbItem> FindFirstByName(string name)
         {
             var creatorDbItem = await _queryableCreators
                 .Where<CreatorDbItem>(c => c.Name == name).FirstOrDefaultAsync();
+            return creatorDbItem;
+        }
+        public async Task<CreatorDbItem> FindFirstById(string id)
+        {
+            var creatorDbItem = await _queryableCreators
+                .Where<CreatorDbItem>(c => c.Id == id).FirstOrDefaultAsync();
 
             return creatorDbItem;
         }
-        public List<CreatorDbItem> Get() =>
-            _creatorCollection.Find(c => true).ToList();
-
-        public CreatorDbItem Get(string id) =>
-            _creatorCollection.Find<CreatorDbItem>(c => c.Id == id).FirstOrDefault();
-
-        public CreatorDbItem Create(CreatorDbItem creator)
+        public async Task<List<CreatorDbItem>> GetAllItems()
         {
-            _creatorCollection.InsertOne(creator);
-            return creator;
+            return await _queryableCreators.ToListAsync();
         }
-        public void Update(string id, CreatorDbItem creator) =>
-            _creatorCollection.ReplaceOne(c => c.Id == id, creator);
-
-        public void Remove(CreatorDbItem creator) =>
-            _creatorCollection.DeleteOne(c => c.Id == creator.Id);
-
-        public void Remove(string id) =>
-            _creatorCollection.DeleteOne(c => c.Id == id);
+        public async void Create(CreatorDbItem creator)
+        {
+            await _creatorCollection.InsertOneAsync(creator);
+        }
+        public async void UpdateById(string id, CreatorDbItem creator)
+        {
+            await _creatorCollection.ReplaceOneAsync(c => c.Id == id, creator);
+        }
+        public async void RemoveById(string id)
+        {
+            await _creatorCollection.DeleteOneAsync(c => c.Id == id);
+        }
     }
 }

@@ -11,7 +11,9 @@ namespace DataCollector.CollectorWorker
         private IMongoDbSettings _mongoDbSettings;
 
         public CollectorWorker(ILogger<CollectorWorker> logger, 
-            IConfiguration configuration, IMongoDbSettings mongoDbSettings, ICollector collector)
+            IConfiguration configuration, 
+            IMongoDbSettings mongoDbSettings, 
+            ICollector collector)
         {
             _logger = logger;
             _configuration = configuration;

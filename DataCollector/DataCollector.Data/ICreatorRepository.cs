@@ -8,13 +8,12 @@ namespace DataCollector.Data
 {
     public interface ICreatorRepository
     {
-        public List<CreatorDbItem> Get();
-        public CreatorDbItem Get(string id);
-        public CreatorDbItem Create(CreatorDbItem creator);
-        public void Update(string id, CreatorDbItem creator);
-        public void Remove(CreatorDbItem creator);
-        public void Remove(string id);
-
-        public Task<CreatorDbItem> FindFirstWithName(string name);
+        Task<CreatorDbItem> FindFirstByName(string name);
+        Task<CreatorDbItem> FindFirstById(string id);
+        Task<List<CreatorDbItem>> GetAllItems();
+        void Create(CreatorDbItem creator);
+        void UpdateById(string id, CreatorDbItem creator);
+        void RemoveById(string id);
     }
+
 }

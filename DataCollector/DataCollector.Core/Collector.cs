@@ -11,7 +11,6 @@ namespace DataCollector.Core
     public class Collector : ICollector
     {
         ICreatorRepository _creatorRepository;
-
         public Collector(ICreatorRepository creatorRepository)
         {
             _creatorRepository = creatorRepository;
@@ -22,7 +21,7 @@ namespace DataCollector.Core
             var httpService = new HttpService();
             httpService.Open();
             httpService.Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md";
-            bool succesful = await httpService.TryUrlToString();
+            bool successful = await httpService.TryUrlToString();
             var markstring = httpService.ResponseString;
             var markdownService = new MarkdownTableService();
             markdownService.GenerateTableByMarkdownString(markstring);
@@ -44,13 +43,12 @@ namespace DataCollector.Core
                 Console.Write(creator.Name);
                 foreach (string url in creator.Urls)
                 {
-                    CreatorDbItem creatorFound = await _creatorRepository.FindFirstWithName(creator.Name);
+                    CreatorDbItem creatorFound = await _creatorRepository.FindFirstByName(creator.Name);
 
                     if(creatorFound == null)
                     {
                         _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
                     }
-   
                     Console.Write($" '{url}'");
                 }
                 Console.WriteLine();
