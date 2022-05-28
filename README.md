@@ -40,5 +40,8 @@ Just playing with ideas here:
 - Web interface showing all the new RSS items
 - Maintenance of the list (broken link check)
 
+## 📖 Project Wiki
+[Developer Manual](https://github.com/matthiasjost/dotnet-data-collector/wiki/Developer-Manual)
+
 
 
