@@ -41,7 +41,7 @@ Just playing with ideas here:
 - Maintenance of the list (broken link check)
 
 ## 📖 Project Wiki
-[Developer Manual](https://github.com/matthiasjost/dotnet-data-collector/wiki/Developer-Manual)
+* [Developer Manual](https://github.com/matthiasjost/dotnet-data-collector/wiki/Developer-Manual)
 
 
 
