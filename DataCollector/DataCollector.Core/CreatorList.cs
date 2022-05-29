@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DataCollector.Data;
-using DataCollector.Services;
+using DataCollector.Services.MarkdownDto;
 
 namespace DataCollector.Core
 {
@@ -27,7 +27,7 @@ namespace DataCollector.Core
 
                     if (creatorFound == null)
                     {
-                        _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
+                        await _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace DataCollector.Core
                     {
                         var creator = new Creator();
 
-                        foreach (Cell cell in row.Cells)
+                        foreach (CellDto cell in row.Cells)
                         {
                             if (cell.ColumnIndex == 0)
                             {

@@ -1,59 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataCollector.Services.MarkdownDto;
 using Markdig;
 using Markdig.Syntax;
 using Markdig.Extensions.Tables;
 using Markdig.Syntax.Inlines;
 
+
 namespace DataCollector.Services
 {
-    public class LinkDto
-    {
-        public string Url { get; set; }
-
-    }
-    public class Cell
-    {
-        public int ColumnIndex { get; set; }
-        public List<string> TextLiterals { get; set; } = new List<string>();
-        public List<LinkDto> Links {  get; set; }
-
-        public Cell(int columnIndex)
-        {
-            ColumnIndex = columnIndex;
-        }
-
-        public string GetPlainText()
-        {
-            string plainText = "";
-
-            foreach (string textLiteral in TextLiterals)
-            {
-                plainText += textLiteral;
-            }
-
-            return plainText;
-        }
-    }
-    public class RowDto
-    {
-        public int RowIndex { get; set; }
-        public List<Cell> Cells { get; set; }
-
-        public RowDto(int rowIndex)
-        {
-            RowIndex = rowIndex;
-        }
-    }
-    public class TableDto
-    {
-        public List<RowDto> Rows { get; set; }
-    }
-
     public class MarkdownTableService
     {
-
+        public string InputMarkdownString { get; set; }
         public List<TableDto> TableList = new List<TableDto>();
         private int TableNumber { get; set; }
         private int TableRowNumber { get; set; }
@@ -72,23 +31,21 @@ namespace DataCollector.Services
         {
             TableRowNumber++;
             TableCellNumber = 0;
-            TableList[TableNumber - 1].Rows.Add(new RowDto(TableRowNumber-1));
-            TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells = new List<Cell>();
+            TableList[TableNumber - 1].Rows.Add(new RowDto(TableRowNumber - 1));
+            TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells = new List<CellDto>();
 
         }
+
         private void NextTableCell()
         {
             TableCellNumber++;
-            TableList[TableNumber - 1].Rows[TableRowNumber-1].Cells.Add(new Cell(TableCellNumber-1));
+            TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells.Add(new CellDto(TableCellNumber - 1));
         }
 
-
-        public string InputMarkdownString { get; set; }
         public void GenerateTableByMarkdownString(string markdown)
         {
             InputMarkdownString = markdown;
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-
             MarkdownDocument document = Markdown.Parse(markdown, pipeline);
 
             foreach (Block currentBlock in document)
@@ -152,7 +109,7 @@ namespace DataCollector.Services
             if (inLineElement is LinkInline)
             {
                 LinkInline linkInLineElement = (LinkInline)inLineElement;
-      
+
                 if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
                 {
                     TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
@@ -167,13 +124,13 @@ namespace DataCollector.Services
                 LiteralInline literalInLine = (LiteralInline)inLineElement;
 
                 string literalValue = literalInLine.Content.Text.Substring(literalInLine.Content.Start, literalInLine.Content.End - literalInLine.Content.Start + 1);
-   
 
-                if(TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals == null)
+
+                if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals == null)
                 {
                     TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals = new List<string>();
                 }
-                TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber-1].TextLiterals.Add(literalValue);
+                TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals.Add(literalValue);
             }
         }
     }
