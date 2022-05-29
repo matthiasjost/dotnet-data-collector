@@ -103,28 +103,33 @@ namespace DataCollector.Services
 
         private void ProcessInLineElement(Inline inlineElement)
         {
-            if (inlineElement is LinkInline linkInlineElement)
+            switch (inlineElement)
             {
-                if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
+                case LinkInline linkInlineElement:
                 {
-                    TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
-                }
+                    if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
+                    {
+                        TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
+                    }
 
-                var linkDto = new LinkDto
-                {
-                    Url = linkInlineElement.Url
-                };
-                TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
-            }
-            else if (inlineElement is LiteralInline literalInline)
-            {
-                string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
-
-                if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals == null)
-                {
-                    TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals = new List<string>();
+                    var linkDto = new LinkDto
+                    {
+                        Url = linkInlineElement.Url
+                    };
+                    TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
+                    break;
                 }
-                TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals.Add(literalValue);
+                case LiteralInline literalInline:
+                {
+                    string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
+
+                    if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals == null)
+                    {
+                        TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals = new List<string>();
+                    }
+                    TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals.Add(literalValue);
+                    break;
+                }
             }
         }
     }
