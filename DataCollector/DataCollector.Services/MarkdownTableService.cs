@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Markdig;
 using Markdig.Syntax;
-using Markdig.Extensions;
+using Markdig.Extensions.Tables;
+using Markdig.Syntax.Inlines;
 
 namespace DataCollector.Services
 {
@@ -25,12 +26,13 @@ namespace DataCollector.Services
 
         public string GetPlainText()
         {
-            string plainText;
-            plainText = "";
+            string plainText = "";
+
             foreach (string textLiteral in TextLiterals)
             {
                 plainText += textLiteral;
             }
+
             return plainText;
         }
     }
@@ -91,30 +93,38 @@ namespace DataCollector.Services
 
             foreach (Block currentBlock in document)
             {
-                if (currentBlock is Markdig.Extensions.Tables.Table)
+                if (currentBlock is Table)
                 {
-                    Markdig.Extensions.Tables.Table table = (Markdig.Extensions.Tables.Table)currentBlock;
+                    Table table = (Table)currentBlock;
                     ProcessTable(table);
                 }
             }
         }
-        private void ProcessTable(Markdig.Extensions.Tables.Table table)
+        private void ProcessTable(Table table)
         {
             NextTable();
-            foreach (Markdig.Extensions.Tables.TableRow tableRow in table)
+
+            foreach (var block in table)
             {
-                ProcessTableRow(tableRow);
+                if (block is TableRow tableRow)
+                {
+                    ProcessTableRow(tableRow);
+                }
             }
         }
-        private void ProcessTableRow(Markdig.Extensions.Tables.TableRow tableRow)
+        private void ProcessTableRow(TableRow tableRow)
         {
             NextRow();
-            foreach (Markdig.Extensions.Tables.TableCell currentTableCell in tableRow)
+
+            foreach (var block in tableRow)
             {
-                ProcessTableCell(currentTableCell);
+                if (block is TableCell tableCell)
+                {
+                    ProcessTableCell(tableCell);
+                }
             }
         }
-        private void ProcessTableCell(Markdig.Extensions.Tables.TableCell tableCell)
+        private void ProcessTableCell(TableCell tableCell)
         {
             NextTableCell();
             foreach (Block currentBlock in tableCell)
@@ -131,17 +141,17 @@ namespace DataCollector.Services
         }
         private void ProcessParagraphBlock(ParagraphBlock paragraphBlock)
         {
-            foreach (Markdig.Syntax.Inlines.Inline inlineElement in paragraphBlock.Inline)
+            foreach (Inline inlineElement in paragraphBlock.Inline)
             {
                 ProcessInLineElement(inlineElement);
             }
 
         }
-        private void ProcessInLineElement(Markdig.Syntax.Inlines.Inline inLineElement)
+        private void ProcessInLineElement(Inline inLineElement)
         {
-            if (inLineElement is Markdig.Syntax.Inlines.LinkInline)
+            if (inLineElement is LinkInline)
             {
-                Markdig.Syntax.Inlines.LinkInline linkInLineELement = (Markdig.Syntax.Inlines.LinkInline)inLineElement;
+                LinkInline linkInLineElement = (LinkInline)inLineElement;
       
                 if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
                 {
@@ -149,12 +159,12 @@ namespace DataCollector.Services
                 }
 
                 LinkDto linkDto = new LinkDto();
-                linkDto.Url = linkInLineELement.Url;
+                linkDto.Url = linkInLineElement.Url;
                 TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
             }
-            else if (inLineElement is Markdig.Syntax.Inlines.LiteralInline)
+            else if (inLineElement is LiteralInline)
             {
-                Markdig.Syntax.Inlines.LiteralInline literalInLine = (Markdig.Syntax.Inlines.LiteralInline)inLineElement;
+                LiteralInline literalInLine = (LiteralInline)inLineElement;
 
                 string literalValue = literalInLine.Content.Text.Substring(literalInLine.Content.Start, literalInLine.Content.End - literalInLine.Content.Start + 1);
    
