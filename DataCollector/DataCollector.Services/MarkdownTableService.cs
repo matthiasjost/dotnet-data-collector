@@ -32,7 +32,6 @@ namespace DataCollector.Services
             TableCellNumber = 0;
             TableList[TableNumber - 1].Rows.Add(new RowDto(TableRowNumber - 1));
             TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells = new List<CellDto>();
-
         }
 
         private void NextTableCell()
@@ -116,8 +115,10 @@ namespace DataCollector.Services
                     TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
                 }
 
-                LinkDto linkDto = new LinkDto();
-                linkDto.Url = linkInlineElement.Url;
+                var linkDto = new LinkDto
+                {
+                    Url = linkInlineElement.Url
+                };
                 TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
             }
             else if (inlineElement is LiteralInline literalInline)
