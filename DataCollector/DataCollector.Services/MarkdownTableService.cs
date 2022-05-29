@@ -84,17 +84,12 @@ namespace DataCollector.Services
         {
             NextTableCell();
 
-            foreach (var currentBlock in tableCell)
+            foreach (var block in tableCell)
             {
-                ProcessTableBlock(currentBlock);
-            }
-        }
-
-        private void ProcessTableBlock(Block block)
-        {
-            if (block is ParagraphBlock)
-            {
-                ProcessParagraphBlock((ParagraphBlock)block);
+                if (block is ParagraphBlock paragraphBlock)
+                {
+                    ProcessParagraphBlock(paragraphBlock);
+                }
             }
         }
 
