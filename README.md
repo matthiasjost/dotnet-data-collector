@@ -12,7 +12,9 @@ The list is a markdown file with a list of curated dotnet content creators publi
 * Keep the original list clean and simple and easy to extend: Use the .NET Data Collector to enrich the data from the markdown list and store it into a MongoDB.
 * The additionally collected data is stored inside a Database which includes:
   * A represantation of the whole markdnown structure: Creator Names, respective country and channel Urls.
-  * The RSS feed extracted from the channel HTML 
+  * The RSS feed URLs extracted from the channel HTML 
+  * The RSS items to presend a feed with all creator content
+* Improve C# skills and fun building something
 
 ## :octocat: Data Parsed From the Original Markdown File
 
@@ -39,6 +41,9 @@ This table contains a description of everything that should be added/enriched to
 Just playing with ideas here:
 - Web interface showing all the new RSS items
 - Maintenance of the list (broken link check)
+
+## 📖 Project Wiki
+* [Developer Manual](https://github.com/matthiasjost/dotnet-data-collector/wiki/Developer-Manual)
 
 
 
