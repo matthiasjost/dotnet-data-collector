@@ -12,7 +12,6 @@ namespace DataCollector.Services
 {
     public class MarkdownTableService
     {
-        public string InputMarkdownString { get; set; }
         public List<TableDto> TableList = new List<TableDto>();
         private int TableNumber { get; set; }
         private int TableRowNumber { get; set; }
@@ -44,19 +43,18 @@ namespace DataCollector.Services
 
         public void GenerateTableByMarkdownString(string markdown)
         {
-            InputMarkdownString = markdown;
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            MarkdownDocument document = Markdown.Parse(markdown, pipeline);
+            var document = Markdown.Parse(markdown, pipeline);
 
-            foreach (Block currentBlock in document)
+            foreach (var block in document)
             {
-                if (currentBlock is Table)
+                if (block is Table table)
                 {
-                    Table table = (Table)currentBlock;
                     ProcessTable(table);
                 }
             }
         }
+
         private void ProcessTable(Table table)
         {
             NextTable();
@@ -69,6 +67,7 @@ namespace DataCollector.Services
                 }
             }
         }
+
         private void ProcessTableRow(TableRow tableRow)
         {
             NextRow();
@@ -81,14 +80,17 @@ namespace DataCollector.Services
                 }
             }
         }
+
         private void ProcessTableCell(TableCell tableCell)
         {
             NextTableCell();
-            foreach (Block currentBlock in tableCell)
+
+            foreach (var currentBlock in tableCell)
             {
                 ProcessTableBlock(currentBlock);
             }
         }
+
         private void ProcessTableBlock(Block block)
         {
             if (block is ParagraphBlock)
@@ -96,35 +98,31 @@ namespace DataCollector.Services
                 ProcessParagraphBlock((ParagraphBlock)block);
             }
         }
+
         private void ProcessParagraphBlock(ParagraphBlock paragraphBlock)
         {
             foreach (Inline inlineElement in paragraphBlock.Inline)
             {
                 ProcessInLineElement(inlineElement);
             }
-
         }
-        private void ProcessInLineElement(Inline inLineElement)
-        {
-            if (inLineElement is LinkInline)
-            {
-                LinkInline linkInLineElement = (LinkInline)inLineElement;
 
+        private void ProcessInLineElement(Inline inlineElement)
+        {
+            if (inlineElement is LinkInline linkInlineElement)
+            {
                 if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
                 {
                     TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
                 }
 
                 LinkDto linkDto = new LinkDto();
-                linkDto.Url = linkInLineElement.Url;
+                linkDto.Url = linkInlineElement.Url;
                 TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
             }
-            else if (inLineElement is LiteralInline)
+            else if (inlineElement is LiteralInline literalInline)
             {
-                LiteralInline literalInLine = (LiteralInline)inLineElement;
-
-                string literalValue = literalInLine.Content.Text.Substring(literalInLine.Content.Start, literalInLine.Content.End - literalInLine.Content.Start + 1);
-
+                string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
 
                 if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].TextLiterals == null)
                 {
