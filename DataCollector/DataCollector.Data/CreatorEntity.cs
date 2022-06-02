@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DataCollector.Data
 {
-    public class CreatorDbItem
+    public class CreatorEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

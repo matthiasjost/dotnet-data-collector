@@ -30,7 +30,7 @@ namespace DataCollector.Core
             var markdownService = new MarkdownTableService();
             markdownService.GenerateTableByMarkdownString(httpService.ResponseString);
 
-            var creatorList = new CreatorList(_creatorRepository);
+            var creatorList = new CreatorListService(_creatorRepository);
             creatorList.FillByTable(markdownService.TableList);
             creatorList.PrintCreators();
             creatorList.AddCreatorsToDb();

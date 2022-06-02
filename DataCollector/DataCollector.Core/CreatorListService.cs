@@ -6,42 +6,39 @@ using DataCollector.Services.MarkdownDto;
 
 namespace DataCollector.Core
 {
-    public class CreatorList
+    public class CreatorListService
     {
         private ICreatorRepository _creatorRepository;
-        public List<Creator> List { get; set; }
+        public List<CreatorDto> ListOfCreatorDtos { get; set; }
 
-        public CreatorList(ICreatorRepository creatorRepository)
+        public CreatorListService(ICreatorRepository creatorRepository)
         {
             _creatorRepository = creatorRepository;
         }
 
         public async void AddCreatorsToDb()
         {
-            foreach (Creator creator in List)
+            foreach (CreatorDto creatorDto in ListOfCreatorDtos)
             {
-                Console.Write(creator.Name);
-                foreach (string url in creator.Urls)
-                {
-                    CreatorDbItem creatorFound = await _creatorRepository.FindFirstByName(creator.Name);
+                CreatorEntity creatorFound = await _creatorRepository.FindFirstByName(creatorDto.Name);
 
-                    if (creatorFound == null)
-                    {
-                        await _creatorRepository.Create(new CreatorDbItem { Name = creator.Name });
-                    }
-                    else
-                    {
-                        
-                    }
-                    Console.Write($" '{url}'");
+                var creator = new CreatorEntity { Name = creatorDto.Name, Urls = creatorDto.Urls };
+
+                if (creatorFound == null)
+                {
+                    await _creatorRepository.Create(creator);
                 }
-                Console.WriteLine();
+                else
+                {
+                    creator.Id = creatorFound.Id;
+                    await _creatorRepository.UpdateById(creator);
+                }
             }
         }
 
         public void PrintCreators()
         {
-            foreach (Creator creator in List)
+            foreach (CreatorDto creator in ListOfCreatorDtos)
             {
                 Console.Write(creator.Name);
                 foreach (string url in creator.Urls)
@@ -53,7 +50,7 @@ namespace DataCollector.Core
         }
         public void FillByTable(List<TableDto> listOfTables)
         {
-            List = new List<Creator>();
+            ListOfCreatorDtos = new List<CreatorDto>();
 
             foreach (TableDto table in listOfTables)
             {
@@ -61,7 +58,7 @@ namespace DataCollector.Core
                 {
                     if (row.RowIndex != 0)
                     {
-                        var creator = new Creator();
+                        var creator = new CreatorDto();
 
                         foreach (CellDto cell in row.Cells)
                         {
@@ -78,7 +75,7 @@ namespace DataCollector.Core
                                 }
                             }
                         }
-                        List.Add(creator);
+                        ListOfCreatorDtos.Add(creator);
                     }
                 }
             }

@@ -12,41 +12,41 @@ namespace DataCollector.Data
 {
     public class CreatorRepository : ICreatorRepository
     {
-        private readonly IMongoCollection<CreatorDbItem> _creatorCollection;
-        private readonly IMongoQueryable<CreatorDbItem> _queryableCreators;
+        private readonly IMongoCollection<CreatorEntity> _creatorCollection;
+        private readonly IMongoQueryable<CreatorEntity> _queryableCreators;
 
         public CreatorRepository(IMongoDbSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _creatorCollection = database.GetCollection<CreatorDbItem>(settings.CreatorCollectionName);
+            _creatorCollection = database.GetCollection<CreatorEntity>(settings.CreatorCollectionName);
             _queryableCreators = _creatorCollection.AsQueryable();
         }
-        public async Task<CreatorDbItem> FindFirstByName(string name)
+        public async Task<CreatorEntity> FindFirstByName(string name)
         {
             var creatorDbItem = await _queryableCreators
-                .Where<CreatorDbItem>(c => c.Name == name).FirstOrDefaultAsync();
+                .Where<CreatorEntity>(c => c.Name == name).FirstOrDefaultAsync();
             return creatorDbItem;
         }
-        public async Task<CreatorDbItem> FindFirstById(string id)
+        public async Task<CreatorEntity> FindFirstById(string id)
         {
             var creatorDbItem = await _queryableCreators
-                .Where<CreatorDbItem>(c => c.Id == id).FirstOrDefaultAsync();
+                .Where<CreatorEntity>(c => c.Id == id).FirstOrDefaultAsync();
 
             return creatorDbItem;
         }
-        public async Task<List<CreatorDbItem>> GetAllItems()
+        public async Task<List<CreatorEntity>> GetAllItems()
         {
             return await _queryableCreators.ToListAsync();
         }
-        public async Task Create(CreatorDbItem creator)
+        public async Task Create(CreatorEntity creator)
         {
             await _creatorCollection.InsertOneAsync(creator);
         }
-        public async Task UpdateById(string id, CreatorDbItem creator)
+        public async Task UpdateById(CreatorEntity creator)
         {
-            await _creatorCollection.ReplaceOneAsync(c => c.Id == id, creator);
+            await _creatorCollection.ReplaceOneAsync(c => c.Id == creator.Id, creator);
         }
         public async Task RemoveById(string id)
         {
