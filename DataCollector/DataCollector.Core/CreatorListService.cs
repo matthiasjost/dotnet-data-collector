@@ -16,7 +16,7 @@ namespace DataCollector.Core
             _creatorRepository = creatorRepository;
         }
 
-        public async void AddCreatorsToDb()
+        public async Task AddCreatorsToDb()
         {
             foreach (CreatorDto creatorDto in ListOfCreatorDtos)
             {
@@ -33,6 +33,22 @@ namespace DataCollector.Core
                     creator.Id = creatorFound.Id;
                     await _creatorRepository.UpdateById(creator);
                 }
+            }
+        }
+        public async Task PrintCreatorsFromDb()
+        {
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            foreach (var creatorEntity in listOfCreatorEntities)
+            {
+
+                Console.Write($"{creatorEntity.Id}, {creatorEntity.Name}");
+
+                foreach (string url in creatorEntity.Urls)
+                {
+                    Console.Write($" '{url}'");
+                }
+                Console.WriteLine();
             }
         }
 

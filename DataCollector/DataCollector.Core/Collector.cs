@@ -33,8 +33,9 @@ namespace DataCollector.Core
             var creatorList = new CreatorListService(_creatorRepository);
             creatorList.FillByTable(markdownService.TableList);
             creatorList.PrintCreators();
-            creatorList.AddCreatorsToDb();
+            await creatorList.AddCreatorsToDb();
 
+            await creatorList.PrintCreatorsFromDb();
             var youTubeService = new YouTubeServiceHelper();
             youTubeService.GetVideo();
         }
