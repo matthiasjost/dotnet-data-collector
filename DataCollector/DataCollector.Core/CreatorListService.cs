@@ -49,8 +49,8 @@ namespace DataCollector.Core
 
                 }
                 creatorEntity.RssFeedUrls = htmlSerivce.ExtractedRssXmlLinks;
+                creatorEntity.AtomFeedUrls = htmlSerivce.ExtractedAtomXmlLinks;
                 _creatorRepository.UpdateById(creatorEntity);
-
             }
         }
 

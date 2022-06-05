@@ -10,10 +10,12 @@ namespace DataCollector.Services
     public class HtmlService
     {
         public List<string> ExtractedRssXmlLinks { get; set; }
+        public List<string> ExtractedAtomXmlLinks { get; set; }
 
         public HtmlService()
         {
             ExtractedRssXmlLinks = new List<string>();
+            ExtractedAtomXmlLinks = new List<string>();
         }
 
         public async Task LoadHtmlAndParseFeedUrls(string url)
@@ -43,6 +45,12 @@ namespace DataCollector.Services
                    var hrefUrl = link.GetAttribute("href");
 
                    ExtractedRssXmlLinks.Add(hrefUrl);
+               }
+               if (typeName == "application/atom+xml")
+               {
+                   var hrefUrl = link.GetAttribute("href");
+
+                   ExtractedAtomXmlLinks.Add(hrefUrl);
                }
             }
         }

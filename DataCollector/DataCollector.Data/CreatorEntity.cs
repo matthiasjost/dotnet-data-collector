@@ -11,5 +11,6 @@ namespace DataCollector.Data
         public string Name { get; set; }
         public List<string> Urls { get; set; }
         public List<string> RssFeedUrls { get; set; }
+        public List<string> AtomFeedUrls { get; set; }
     }
 }
