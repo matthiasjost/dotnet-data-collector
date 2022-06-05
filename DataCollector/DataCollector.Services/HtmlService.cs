@@ -24,10 +24,10 @@ namespace DataCollector.Services
             httpService.Url = url;
             if (await httpService.TryUrlToString())
             {
-                await ParseRssXmlLinks(httpService.ResponseString);
+                await ParseRssAndAtomXmlLinks(httpService.ResponseString);
             }
         }
-        public async Task ParseRssXmlLinks(string htmlCode)
+        public async Task ParseRssAndAtomXmlLinks(string htmlCode)
         {
             var config = Configuration.Default;
             using var context = BrowsingContext.New(config);
@@ -42,16 +42,15 @@ namespace DataCollector.Services
 
                if (typeName == "application/rss+xml")
                {
-                   var hrefUrl = link.GetAttribute("href");
-
+                   string hrefUrl = link.GetAttribute("href");
                    ExtractedRssXmlLinks.Add(hrefUrl);
-               }
-               if (typeName == "application/atom+xml")
-               {
-                   var hrefUrl = link.GetAttribute("href");
 
-                   ExtractedAtomXmlLinks.Add(hrefUrl);
                }
+               else if (typeName == "application/atom+xml")
+               {
+                   string hrefUrl = link.GetAttribute("href");
+                   ExtractedAtomXmlLinks.Add(hrefUrl);
+                }
             }
         }
     }

@@ -9,8 +9,6 @@ namespace DataCollector.Data
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Name { get; set; }
-        public List<string> Urls { get; set; }
-        public List<string> RssFeedUrls { get; set; }
-        public List<string> AtomFeedUrls { get; set; }
+        public List<ChannelEntity> Channels { get; set; }
     }
 }

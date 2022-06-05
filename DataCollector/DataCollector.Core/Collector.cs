@@ -24,7 +24,7 @@ namespace DataCollector.Core
 
             if (await httpService.TryUrlToString() == false)
             {
-                
+
             }
 
             var markdownService = new MarkdownTableService();
@@ -35,7 +35,6 @@ namespace DataCollector.Core
             creatorList.PrintCreators();
             await creatorList.AddCreatorsToDb();
             await creatorList.AddRssUrlsFromHtml();
-
 
             await creatorList.PrintCreatorsFromDb();
             var youTubeService = new YouTubeServiceHelper();

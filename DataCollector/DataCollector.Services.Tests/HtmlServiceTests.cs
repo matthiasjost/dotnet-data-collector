@@ -12,7 +12,7 @@ namespace DataCollector.Services.Tests
             {
                 var htmlService = new HtmlService();
 
-                htmlService.ParseRssXmlLinks(httpService.ResponseString);
+                htmlService.ParseRssAndAtomXmlLinks(httpService.ResponseString);
 
                 Assert.True(htmlService.ExtractedRssXmlLinks.Count > 1, "Didn't find any URLs in HTML code!");
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AngleSharp.Dom;
 using DataCollector.Data;
 using DataCollector.Services;
 using DataCollector.Services.MarkdownDto;
@@ -23,7 +24,14 @@ namespace DataCollector.Core
             {
                 CreatorEntity creatorFound = await _creatorRepository.FindFirstByName(creatorDto.Name);
 
-                var creator = new CreatorEntity { Name = creatorDto.Name, Urls = creatorDto.Urls };
+                var channels = new List<ChannelEntity>();
+
+                foreach (string url in creatorDto.Urls)
+                {
+                    channels.Add(new ChannelEntity() { Url = url });
+                }
+
+                var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels };
 
                 if (creatorFound == null)
                 {
@@ -43,13 +51,21 @@ namespace DataCollector.Core
             foreach (var creatorEntity in listOfCreatorEntities)
             {
                 var htmlSerivce = new HtmlService();
-                foreach (string url in creatorEntity.Urls)
+                foreach (var channel in creatorEntity.Channels)
                 {
-                    await htmlSerivce.LoadHtmlAndParseFeedUrls(url); 
+                    await htmlSerivce.LoadHtmlAndParseFeedUrls(channel.Url);
+                    if (htmlSerivce.ExtractedRssXmlLinks.Count > 0)
+                    {
+                        channel.Rss = htmlSerivce.ExtractedRssXmlLinks[0];
+                    }
+
+                    if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
+                    {
+
+                        channel.Atom = htmlSerivce.ExtractedAtomXmlLinks[0];
+                    }
 
                 }
-                creatorEntity.RssFeedUrls = htmlSerivce.ExtractedRssXmlLinks;
-                creatorEntity.AtomFeedUrls = htmlSerivce.ExtractedAtomXmlLinks;
                 _creatorRepository.UpdateById(creatorEntity);
             }
         }
@@ -62,9 +78,9 @@ namespace DataCollector.Core
             {
                 Console.Write($"{creatorEntity.Id}, {creatorEntity.Name}");
 
-                foreach (string url in creatorEntity.Urls)
+                foreach (var channel in creatorEntity.Channels)
                 {
-                    Console.Write($" '{url}'");
+                    Console.Write($" '{channel.Url}'");
                 }
                 Console.WriteLine();
             }
