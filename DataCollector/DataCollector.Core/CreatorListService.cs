@@ -51,7 +51,6 @@ namespace DataCollector.Core
                 Console.WriteLine();
             }
         }
-
         public void PrintCreators()
         {
             foreach (CreatorDto creator in ListOfCreatorDtos)
