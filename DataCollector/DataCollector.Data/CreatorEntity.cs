@@ -10,5 +10,6 @@ namespace DataCollector.Data
         public string Id { get; set; }
         public string Name { get; set; }
         public List<string> Urls { get; set; }
+        public List<string> RssFeedUrls { get; set; }
     }
 }

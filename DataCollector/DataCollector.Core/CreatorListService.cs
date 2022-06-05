@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DataCollector.Data;
+using DataCollector.Services;
 using DataCollector.Services.MarkdownDto;
 
 namespace DataCollector.Core
@@ -35,13 +36,30 @@ namespace DataCollector.Core
                 }
             }
         }
+
+        public async Task AddRssUrlsFromHtml()
+        {
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+            foreach (var creatorEntity in listOfCreatorEntities)
+            {
+                var htmlSerivce = new HtmlService();
+                foreach (string url in creatorEntity.Urls)
+                {
+                    await htmlSerivce.LoadHtmlAndParseFeedUrls(url); 
+
+                }
+                creatorEntity.RssFeedUrls = htmlSerivce.ExtractedRssXmlLinks;
+                _creatorRepository.UpdateById(creatorEntity);
+
+            }
+        }
+
         public async Task PrintCreatorsFromDb()
         {
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
 
             foreach (var creatorEntity in listOfCreatorEntities)
             {
-
                 Console.Write($"{creatorEntity.Id}, {creatorEntity.Name}");
 
                 foreach (string url in creatorEntity.Urls)
