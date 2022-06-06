@@ -26,9 +26,9 @@ namespace DataCollector.Core
 
                 var channels = new List<ChannelEntity>();
 
-                foreach (string url in creatorDto.Urls)
+                foreach (LinkDto link in creatorDto.Links)
                 {
-                    channels.Add(new ChannelEntity() { Url = url });
+                    channels.Add(new ChannelEntity() { Url = link.Url, Label = link.FirstChildLiteral});
                 }
 
                 var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels };
@@ -45,7 +45,7 @@ namespace DataCollector.Core
             }
         }
 
-        public async Task AddRssUrlsFromHtml()
+        public async Task AddFeedUrlsFromHtml()
         {
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
             foreach (var creatorEntity in listOfCreatorEntities)
@@ -56,17 +56,40 @@ namespace DataCollector.Core
                     await htmlSerivce.LoadHtmlAndParseFeedUrls(channel.Url);
                     if (htmlSerivce.ExtractedRssXmlLinks.Count > 0)
                     {
-                        channel.Rss = htmlSerivce.ExtractedRssXmlLinks[0];
+                        foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
+                        {
+                            if (channel.Feeds == null)
+                            {
+                                channel.Feeds = new List<FeedEntity>();
+                            }
+                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss"});
+                        }
                     }
-
                     if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
                     {
-
-                        channel.Atom = htmlSerivce.ExtractedAtomXmlLinks[0];
+                        foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
+                        {
+                            if (channel.Feeds == null)
+                            {
+                                channel.Feeds = new List<FeedEntity>();
+                            }
+                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Atom" });
+                        }
                     }
-
+                    if (htmlSerivce.ExtractedFeedXmlLinks.Count > 0)
+                    {
+                        foreach (var link in htmlSerivce.ExtractedFeedXmlLinks)
+                        {
+                            if (channel.Feeds == null)
+                            {
+                                channel.Feeds = new List<FeedEntity>();
+                            }
+                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Feed" });
+                        }
+                    }
                 }
-                _creatorRepository.UpdateById(creatorEntity);
+                await _creatorRepository.UpdateById(creatorEntity);
+                Console.Write(".");
             }
         }
 
@@ -90,9 +113,9 @@ namespace DataCollector.Core
             foreach (CreatorDto creator in ListOfCreatorDtos)
             {
                 Console.Write(creator.Name);
-                foreach (string url in creator.Urls)
+                foreach (LinkDto link in creator.Links)
                 {
-                    Console.Write($" '{url}'");
+                    Console.Write($" '{link.FirstChildLiteral}' = '{link.Url}'");
                 }
                 Console.WriteLine();
             }
@@ -117,10 +140,10 @@ namespace DataCollector.Core
                             }
                             else if (cell.ColumnIndex == 1)
                             {
-                                creator.Urls = new List<string>();
+                                creator.Links = new List<LinkDto>();
                                 foreach (LinkDto link in cell.Links)
                                 {
-                                    creator.Urls.Add(link.Url);
+                                    creator.Links.Add(link);
                                 }
                             }
                         }

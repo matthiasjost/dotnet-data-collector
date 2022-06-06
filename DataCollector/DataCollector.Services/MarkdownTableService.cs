@@ -116,6 +116,13 @@ namespace DataCollector.Services
                     {
                         Url = linkInlineElement.Url
                     };
+
+                    var firstChild = linkInlineElement.FirstChild;
+                    if (firstChild != null && firstChild is LiteralInline literalInline )
+                    {
+                        linkDto.FirstChildLiteral = literalInline.ToString();
+                    }
+
                     TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links.Add(linkDto);
                     break;
                 }

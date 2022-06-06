@@ -34,7 +34,7 @@ namespace DataCollector.Core
             creatorList.FillByTable(markdownService.TableList);
             creatorList.PrintCreators();
             await creatorList.AddCreatorsToDb();
-            await creatorList.AddRssUrlsFromHtml();
+            await creatorList.AddFeedUrlsFromHtml();
 
             await creatorList.PrintCreatorsFromDb();
             var youTubeService = new YouTubeServiceHelper();
