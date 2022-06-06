@@ -37,7 +37,7 @@ namespace DataCollector.Core
             await creatorList.AddFeedUrlsFromHtml();
 
             await creatorList.PrintCreatorsFromDb();
-            var youTubeService = new YouTubeServiceHelper();
+            var youTubeService = new YouTubeApiService();
             youTubeService.GetVideo();
         }
     }

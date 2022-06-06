@@ -30,9 +30,7 @@ namespace DataCollector.Services.Tests
             if (await httpService.TryUrlToString())
             {
                 var htmlService = new HtmlService();
-
                 htmlService.ParseRssAndAtomXmlLinks(httpService.ResponseString);
-
                 Assert.True(htmlService.ExtractedRssXmlLinks.Count > 1, "Didn't find any URLs in HTML code!");
             }
             else

@@ -6,9 +6,9 @@ using Google.Apis.YouTube.v3;
 
 namespace DataCollector.Services
 {
-    public class YouTubeServiceHelper
+    public class YouTubeApiService
     {
-        public YouTubeServiceHelper()
+        public YouTubeApiService()
         {
 
 
@@ -17,6 +17,7 @@ namespace DataCollector.Services
         {
             try
             {
+        
                 var youTubeService = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBAlcvuUyXwLQf_bEX6Sh4Cj - EAcZVNfDg" });
 
  
