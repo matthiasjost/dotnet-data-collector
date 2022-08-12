@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Data", "DataC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.CollectorWorker", "DataCollector.CollectorWorker\DataCollector.CollectorWorker.csproj", "{19149907-86AD-4325-95DF-F363ACAF3933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector.Services.Tests", "DataCollector.Services.Tests\DataCollector.Services.Tests.csproj", "{40291C79-C89F-438A-B37D-D7B9F41159AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Services.Tests", "DataCollector.Services.Tests\DataCollector.Services.Tests.csproj", "{40291C79-C89F-438A-B37D-D7B9F41159AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector.Web", "DataCollector.Web\DataCollector.Web.csproj", "{2DBE0158-D422-4FD7-8923-C1018FED795A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{40291C79-C89F-438A-B37D-D7B9F41159AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40291C79-C89F-438A-B37D-D7B9F41159AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40291C79-C89F-438A-B37D-D7B9F41159AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

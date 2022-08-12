@@ -8,7 +8,7 @@ using DataCollector.Services.MarkdownDto;
 
 namespace DataCollector.Core
 {
-    public class CreatorListService
+    public class CreatorListService : ICreatorListService
     {
         private ICreatorRepository _creatorRepository;
         public List<CreatorDto> ListOfCreatorDtos { get; set; }

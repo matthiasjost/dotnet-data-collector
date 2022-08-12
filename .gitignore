@@ -26,3 +26,5 @@
 /DataCollector/DataCollector.Services.Tests/bin/*
 /DataCollector/DataCollector.Services.Tests/obj/*
 /DataCollector/DataColector.Services.Tests/obj/*
+/DataCollector/DataCollector.Web/obj/*
+/DataCollector/Host/obj/*
