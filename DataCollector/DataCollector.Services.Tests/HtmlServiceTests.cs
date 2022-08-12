@@ -22,7 +22,7 @@ namespace DataCollector.Services.Tests
             }
         }
         [Fact]
-        public async void TestIfYouTubeUserNameExtractFeeddUrls()
+        public async void TestIfYouTubeUserNameExtractFeedUrls()
         {
             var httpService = new HttpService();
 

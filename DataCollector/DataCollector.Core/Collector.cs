@@ -27,16 +27,24 @@ namespace DataCollector.Core
 
             }
 
+
+
+
             var markdownService = new MarkdownTableService();
             markdownService.GenerateTableByMarkdownString(httpService.ResponseString);
 
             var creatorList = new CreatorListService(_creatorRepository);
+            await creatorList.CheckBrokenLinks();
+
+
+
             creatorList.FillByTable(markdownService.TableList);
             creatorList.PrintCreators();
             await creatorList.AddCreatorsToDb();
             await creatorList.AddFeedUrlsFromHtml();
 
             await creatorList.PrintCreatorsFromDb();
+
             var youTubeService = new YouTubeApiService();
             youTubeService.GetVideo();
         }

@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace DataCollector.Services
 {
-    public class HttpService
+    public class HttpService : IHttpService
     {
         private HttpClient _httpClient { get; set; }
         public string Url { get; set; }
         public string ResponseString { get; set; }
-        HttpResponseMessage ResponseMessage { get; set; }
+        public HttpResponseMessage ResponseMessage { get; set; }
 
         public HttpService()
         {
@@ -29,6 +29,5 @@ namespace DataCollector.Services
             }
             return true;
         }
-
     }
 }

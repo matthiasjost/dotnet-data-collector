@@ -152,5 +152,31 @@ namespace DataCollector.Core
                 }
             }
         }
+
+        public async Task CheckBrokenLinks()
+        {
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            foreach (var creatorEntity in listOfCreatorEntities)
+            {
+
+
+                foreach (var channel in creatorEntity.Channels)
+                {
+                    var brokenLinkCheckService = new BrokenLinkCheckService();
+                    var successFlag = await brokenLinkCheckService.PerformCheck(channel.Url);
+                    if (successFlag == false)
+                    {
+                        Console.WriteLine($"Name: '{creatorEntity.Name}', successFlag = '{successFlag}', '{channel.Url}'");
+                    }
+                    else
+                    {
+                        Console.Write(".");
+                    }
+                   
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
