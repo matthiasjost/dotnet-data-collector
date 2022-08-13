@@ -18,12 +18,11 @@ namespace DataCollector.Web.Controllers
 
         // GET: api/<CreatorsController>
         [HttpGet]
-        public IEnumerable<CreatorDto> Get()
+        public async Task<IEnumerable<CreatorDto>> GetAllCreators()
         {
-            _creatorListService.PrintCreatorsFromDb();
+            await _creatorListService.FillDtoListByDatabase();
             return _creatorListService.ListOfCreatorDtos;
         }
-
 
         // POST api/<CreatorsController>
         [HttpPost]

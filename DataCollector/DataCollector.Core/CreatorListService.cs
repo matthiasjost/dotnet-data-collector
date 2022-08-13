@@ -16,6 +16,7 @@ namespace DataCollector.Core
         public CreatorListService(ICreatorRepository creatorRepository)
         {
             _creatorRepository = creatorRepository;
+            ListOfCreatorDtos = new List<CreatorDto>();
         }
 
         public async Task AddCreatorsToDb()
@@ -28,7 +29,7 @@ namespace DataCollector.Core
 
                 foreach (LinkDto link in creatorDto.Links)
                 {
-                    channels.Add(new ChannelEntity() { Url = link.Url, Label = link.FirstChildLiteral});
+                    channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label});
                 }
 
                 var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels };
@@ -93,6 +94,8 @@ namespace DataCollector.Core
             }
         }
 
+
+
         public async Task PrintCreatorsFromDb()
         {
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
@@ -115,12 +118,40 @@ namespace DataCollector.Core
                 Console.Write(creator.Name);
                 foreach (LinkDto link in creator.Links)
                 {
-                    Console.Write($" '{link.FirstChildLiteral}' = '{link.Url}'");
+                    Console.Write($" '{link.Label}' = '{link.Url}'");
                 }
                 Console.WriteLine();
             }
         }
-        public void FillByTable(List<TableDto> listOfTables)
+
+        public async Task<List<CreatorDto>> FillDtoListByDatabase()
+        {
+            
+            List<CreatorEntity> listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            foreach (CreatorEntity creatorEntity in listOfCreatorEntities)
+            {
+                CreatorDto creatorDto = new CreatorDto()
+                {
+                    Name = creatorEntity.Name,
+                };
+
+                foreach (ChannelEntity channel in creatorEntity.Channels)
+                {
+                    LinkDto linkDto = new LinkDto();
+
+                    linkDto.Label = channel.Label;
+                    linkDto.Url = channel.Url;
+
+                    creatorDto.Links.Add(linkDto);
+
+                }
+                ListOfCreatorDtos.Add(creatorDto);
+            }
+            return ListOfCreatorDtos;
+        }
+
+        public void FillDtoListByMarkdownTable(List<TableDto> listOfTables)
         {
             ListOfCreatorDtos = new List<CreatorDto>();
 
@@ -167,7 +198,7 @@ namespace DataCollector.Core
                     var successFlag = await brokenLinkCheckService.PerformCheck(channel.Url);
                     if (successFlag == false)
                     {
-                        Console.WriteLine($"Name: '{creatorEntity.Name}', successFlag = '{successFlag}', '{channel.Url}'");
+                        Console.WriteLine($"Label: '{creatorEntity.Name}', successFlag = '{successFlag}', '{channel.Url}'");
                     }
                     else
                     {

@@ -9,5 +9,10 @@ namespace DataCollector.Core
     {
         public string Name { get; set; }
         public List<LinkDto> Links { get; set; }
+
+        public CreatorDto()
+        {
+            Links = new List<LinkDto>();
+        }
     }
 }

@@ -9,6 +9,7 @@ public interface ICreatorListService
     Task AddFeedUrlsFromHtml();
     Task PrintCreatorsFromDb();
     void PrintCreators();
-    void FillByTable(List<TableDto> listOfTables);
+    void FillDtoListByMarkdownTable(List<TableDto> listOfTables);
+    public Task<List<CreatorDto>> FillDtoListByDatabase();
     Task CheckBrokenLinks();
 }

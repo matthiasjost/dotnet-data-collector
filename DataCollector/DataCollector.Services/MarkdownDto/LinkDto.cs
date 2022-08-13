@@ -6,7 +6,7 @@ namespace DataCollector.Services.MarkdownDto
 {
     public class LinkDto
     {
-        public string FirstChildLiteral { get; set; }
+        public string Label { get; set; }
         public string Url { get; set; }
     }
 

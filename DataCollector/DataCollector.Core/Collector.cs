@@ -33,17 +33,17 @@ namespace DataCollector.Core
             var markdownService = new MarkdownTableService();
             markdownService.GenerateTableByMarkdownString(httpService.ResponseString);
 
-            var creatorList = new CreatorListService(_creatorRepository);
-            await creatorList.CheckBrokenLinks();
+            var creatorListService = new CreatorListService(_creatorRepository);
+            await creatorListService.CheckBrokenLinks();
 
 
 
-            creatorList.FillByTable(markdownService.TableList);
-            creatorList.PrintCreators();
-            await creatorList.AddCreatorsToDb();
-            await creatorList.AddFeedUrlsFromHtml();
+            creatorListService.FillDtoListByMarkdownTable(markdownService.TableList);
+            creatorListService.PrintCreators();
+            await creatorListService.AddCreatorsToDb();
+            await creatorListService.AddFeedUrlsFromHtml();
 
-            await creatorList.PrintCreatorsFromDb();
+            await creatorListService.PrintCreatorsFromDb();
 
             var youTubeService = new YouTubeApiService();
             youTubeService.GetVideo();
