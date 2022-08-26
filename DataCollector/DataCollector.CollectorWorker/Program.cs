@@ -19,6 +19,8 @@ namespace Company.WebApplication1
                     services.AddSingleton<ICreatorRepository, CreatorRepository>();
                     services.AddSingleton<ICollector, Collector>();
                     services.AddTransient<IHttpService, HttpService>();
+                    services.AddTransient<ICreatorListService, CreatorListService>();
+                    services.AddTransient<IMarkdownTableService, MarkdownTableService>();
                 })
                 .Build();
             host.Run();

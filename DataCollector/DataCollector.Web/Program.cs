@@ -23,6 +23,7 @@ namespace DataCollector.Web
 
             builder.Services.AddTransient<ICreatorListService, CreatorListService>();
             builder.Services.AddTransient<IHttpService, HttpService>();
+            builder.Services.AddTransient<IMarkdownTableService, MarkdownTableService>();
 
             var app = builder.Build();
 

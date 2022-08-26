@@ -5,48 +5,46 @@ using System.Threading.Tasks;
 using System.Linq;
 using DataCollector.Services;
 using DataCollector.Data;
+using AngleSharp.Dom;
+using MongoDB.Driver.Core.WireProtocol.Messages;
+using System.Net.Http;
+using DataCollector.Services.MarkdownDto;
 
 namespace DataCollector.Core
 {
     public class Collector : ICollector
     {
-        ICreatorRepository _creatorRepository;
-        public Collector(ICreatorRepository creatorRepository)
+        private ICreatorRepository _creatorRepository;
+        private ICreatorListService _creatorListService;
+        private IMarkdownTableService _markdownTableService;
+
+        public Collector(ICreatorRepository creatorRepository, 
+            ICreatorListService creatorListService,
+            IMarkdownTableService markdownTableService)
         {
             _creatorRepository = creatorRepository;
+            _creatorListService = creatorListService;
+            _markdownTableService = markdownTableService;
         }
         public async Task Run()
         {
-            var httpService = new HttpService
-            {
-                Url = "https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md"
-            };
+            HttpClient httpClient = new HttpClient();
 
-            if (await httpService.TryUrlToString() == false)
-            {
+            var httpResponseMessage = await httpClient.GetAsync("https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md");
+            string markdownString = await httpResponseMessage.Content.ReadAsStringAsync();
 
-            }
+            List<TableDto> tableList = _markdownTableService.GenerateTableByMarkdownString(markdownString);
+            List<CreatorDto> creatorDtoList = _creatorListService.MapTableToCreators(tableList);
 
+            await _creatorListService.AddCreatorsToDb();
+            _creatorListService.PrintCreators();
+            
+            //await _creatorListService.AddFeedUrlsFromHtml();
+            //await _creatorListService.PrintCreatorsFromDb();
+            //await _creatorListService.CheckBrokenLinks();
 
-
-
-            var markdownService = new MarkdownTableService();
-            markdownService.GenerateTableByMarkdownString(httpService.ResponseString);
-
-            var creatorListService = new CreatorListService(_creatorRepository);
-            await creatorListService.CheckBrokenLinks();
-
-
-
-            creatorListService.FillDtoListByMarkdownTable(markdownService.TableList);
-            creatorListService.PrintCreators();
-            await creatorListService.AddCreatorsToDb();
-            await creatorListService.AddFeedUrlsFromHtml();
-
-            await creatorListService.PrintCreatorsFromDb();
-
-            var youTubeService = new YouTubeApiService();
-            youTubeService.GetVideo();
+            //var youTubeService = new YouTubeApiService();
+            //youTubeService.GetVideo();
         }
     }
 }

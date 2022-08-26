@@ -10,9 +10,9 @@ using Markdig.Syntax.Inlines;
 
 namespace DataCollector.Services
 {
-    public class MarkdownTableService
+    public class MarkdownTableService : IMarkdownTableService
     {
-        public List<TableDto> TableList = new List<TableDto>();
+        private List<TableDto> TableList { get; set; } = new List<TableDto>();
         private int TableNumber { get; set; }
         private int TableRowNumber { get; set; }
         private int TableCellNumber { get; set; }
@@ -40,7 +40,7 @@ namespace DataCollector.Services
             TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells.Add(new CellDto(TableCellNumber - 1));
         }
 
-        public void GenerateTableByMarkdownString(string markdown)
+        public List<TableDto> GenerateTableByMarkdownString(string markdown)
         {
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             var document = Markdown.Parse(markdown, pipeline);
@@ -52,6 +52,8 @@ namespace DataCollector.Services
                     ProcessTable(table);
                 }
             }
+
+            return TableList;
         }
 
         private void ProcessTable(Table table)
@@ -140,4 +142,5 @@ namespace DataCollector.Services
             }
         }
     }
+
 }

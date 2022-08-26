@@ -11,7 +11,7 @@ namespace DataCollector.Core
     public class CreatorListService : ICreatorListService
     {
         private ICreatorRepository _creatorRepository;
-        public List<CreatorDto> ListOfCreatorDtos { get; set; }
+        private List<CreatorDto> ListOfCreatorDtos { get; set; }
 
         public CreatorListService(ICreatorRepository creatorRepository)
         {
@@ -151,7 +151,7 @@ namespace DataCollector.Core
             return ListOfCreatorDtos;
         }
 
-        public void FillDtoListByMarkdownTable(List<TableDto> listOfTables)
+        public List<CreatorDto> MapTableToCreators(List<TableDto> listOfTables)
         {
             ListOfCreatorDtos = new List<CreatorDto>();
 
@@ -182,6 +182,8 @@ namespace DataCollector.Core
                     }
                 }
             }
+
+            return ListOfCreatorDtos;
         }
 
         public async Task CheckBrokenLinks()
