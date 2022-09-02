@@ -14,6 +14,7 @@ namespace DataCollector.Data
         Task Create(CreatorEntity creator);
         Task UpdateById(CreatorEntity creator);
         Task RemoveById(string id);
+        Task<List<CreatorEntity>> GetItems(string searchValue);
     }
 
 }

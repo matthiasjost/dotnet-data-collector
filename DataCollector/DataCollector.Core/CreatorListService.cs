@@ -151,6 +151,33 @@ namespace DataCollector.Core
             return ListOfCreatorDtos;
         }
 
+        public async Task<List<CreatorDto>> FillDtoListByDatabase(string searchValue)
+        {
+
+            List<CreatorEntity> listOfCreatorEntities = await _creatorRepository.GetItems(searchValue);
+
+            foreach (CreatorEntity creatorEntity in listOfCreatorEntities)
+            {
+                CreatorDto creatorDto = new CreatorDto()
+                {
+                    Name = creatorEntity.Name,
+                };
+
+                foreach (ChannelEntity channel in creatorEntity.Channels)
+                {
+                    LinkDto linkDto = new LinkDto();
+
+                    linkDto.Label = channel.Label;
+                    linkDto.Url = channel.Url;
+
+                    creatorDto.Links.Add(linkDto);
+
+                }
+                ListOfCreatorDtos.Add(creatorDto);
+            }
+            return ListOfCreatorDtos;
+        }
+
         public List<CreatorDto> MapTableToCreators(List<TableDto> listOfTables)
         {
             ListOfCreatorDtos = new List<CreatorDto>();

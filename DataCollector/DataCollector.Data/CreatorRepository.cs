@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver.Linq;
+using static MongoDB.Driver.WriteConcern;
 
 namespace DataCollector.Data
 {
@@ -38,8 +39,20 @@ namespace DataCollector.Data
         }
         public async Task<List<CreatorEntity>> GetAllItems()
         {
+   
             return await _queryableCreators.ToListAsync();
         }
+
+        public async Task<List<CreatorEntity>> GetItems(string searchValue)
+        {
+            var queryable = _queryableCreators.Where(c => c.Name.ToLower().Contains(searchValue.ToLower()));
+
+            var executionModel = ((IMongoQueryable<CreatorEntity>)queryable).GetExecutionModel();
+            var queryString = executionModel.ToString();
+
+            return await _queryableCreators.Where(c => c.Name.ToLower().Contains(searchValue.ToLower())).ToListAsync();
+        }
+
         public async Task Create(CreatorEntity creator)
         {
             await _creatorCollection.InsertOneAsync(creator);

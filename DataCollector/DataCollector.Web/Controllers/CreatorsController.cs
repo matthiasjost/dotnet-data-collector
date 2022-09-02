@@ -22,5 +22,12 @@ namespace DataCollector.Web.Controllers
         {
             return await _creatorListService.FillDtoListByDatabase();
         }
+        // GET: api/<CreatorsController>
+        [HttpGet]
+        [Route("search")]
+        public async Task<IEnumerable<CreatorDto>> GetSearchCreators(string searchString)
+        {
+            return await _creatorListService.FillDtoListByDatabase(searchString);
+        }
     }
 }
