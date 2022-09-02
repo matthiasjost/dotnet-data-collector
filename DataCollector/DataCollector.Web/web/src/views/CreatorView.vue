@@ -1,3 +1,13 @@
+<script lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import CreatorView from "@/views/CreatorView.vue";
+
+import { CreatorClient } from "@/creator-client"
+
+export default {
+  name: "CreatorView"
+}
+</script>
 <template>
   <main class="container">
     <nav>
@@ -43,11 +53,6 @@
   </main>
 </template>
 
-<script>
-export default {
-  name: "CreatorView"
-}
-</script>
 
 <style scoped>
 

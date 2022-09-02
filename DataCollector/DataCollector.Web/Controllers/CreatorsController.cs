@@ -17,29 +17,10 @@ namespace DataCollector.Web.Controllers
         }
 
         // GET: api/<CreatorsController>
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IEnumerable<CreatorDto>> GetAllCreators()
         {
-            await _creatorListService.FillDtoListByDatabase();
-            return _creatorListService.GetD;
-        }*/
-
-        // POST api/<CreatorsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<CreatorsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CreatorsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return await _creatorListService.FillDtoListByDatabase();
         }
     }
 }
