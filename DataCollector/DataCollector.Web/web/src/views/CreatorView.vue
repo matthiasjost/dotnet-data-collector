@@ -5,8 +5,16 @@ import CreatorView from "@/views/CreatorView.vue";
 import { CreatorClient } from "@/creator-client"
 
 export default {
-  name: "CreatorView"
+  name: "CreatorView",
+
+  mounted() {
+    console.log(`the component is now mounted.`)
+    var client = new CreatorClient();
+    var list = client.creators();
+    console.log(list);
+  }
 }
+
 </script>
 <template>
   <main class="container">
