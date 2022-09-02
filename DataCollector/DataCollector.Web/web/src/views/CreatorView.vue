@@ -50,7 +50,7 @@ import { ref, watch } from 'vue'
               <a :href="link.url">{{ link.label }}</a>
             </span>
             <span v-if="index != (item.links.length-1)">
-              <a :href="link.url">{{ link.label }}</a> ,
+              <a :href="link.url">{{ link.label }}</a>,
             </span>
           </span>
         </td>

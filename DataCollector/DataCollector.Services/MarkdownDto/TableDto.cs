@@ -6,6 +6,7 @@ namespace DataCollector.Services.MarkdownDto
 {
     public class TableDto
     {
+        public string Title { get; set; }
         public List<RowDto> Rows { get; set; }
     }
 }

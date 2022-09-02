@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DataCollector.Services.MarkdownDto;
 using Markdig;
@@ -17,12 +18,12 @@ namespace DataCollector.Services
         private int TableRowNumber { get; set; }
         private int TableCellNumber { get; set; }
 
-        private void NextTable()
+        private void NextTable(List<string> tableLiterals)
         {
             TableRowNumber = 0;
             TableCellNumber = 0;
             TableNumber++;
-            TableList.Add(new TableDto());
+            TableList.Add(new TableDto() { Title = tableLiterals.Last() });
             TableList[TableNumber - 1].Rows = new List<RowDto>();
 
         }
@@ -44,21 +45,29 @@ namespace DataCollector.Services
         {
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             var document = Markdown.Parse(markdown, pipeline);
+            List<string> tableStringLiterals = new List<string>();
 
             foreach (var block in document)
             {
-                if (block is Table table)
+                if (block is HeadingBlock headingBlock)
                 {
-                    ProcessTable(table);
+                    string tableLiteral = ProcessInLineElementHeader(headingBlock.Inline);
+                    tableStringLiterals.Add(tableLiteral);
+
+                }
+                else if (block is Table table)
+                {
+                    ProcessTable(table, tableStringLiterals);
+                    tableStringLiterals = new List<string>();
                 }
             }
 
             return TableList;
         }
 
-        private void ProcessTable(Table table)
+        private void ProcessTable(Table table, List<string> tableLiterals)
         {
-            NextTable();
+            NextTable(tableLiterals);
 
             foreach (var block in table)
             {
@@ -101,6 +110,34 @@ namespace DataCollector.Services
             {
                 ProcessInLineElement(inlineElement);
             }
+        }
+
+        private string ProcessInLineElementHeader(Inline inlineElement)
+        {
+            switch (inlineElement)
+            {
+                case LinkInline linkInlineElement:
+                {
+                    
+                    break;
+                }
+                case ContainerInline containerInline:
+                {
+                    if (containerInline.FirstChild is LiteralInline literalInline)
+                    {
+                        string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
+                        return literalValue;
+                    }
+                    break;
+                }
+                case LiteralInline literalInline:
+                {
+                    string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
+
+                    break;
+                }
+            }
+            return string.Empty;
         }
 
         private void ProcessInLineElement(Inline inlineElement)
