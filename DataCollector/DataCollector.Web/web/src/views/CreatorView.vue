@@ -2,19 +2,12 @@
 import { RouterLink, RouterView } from 'vue-router'
 import CreatorView from "@/views/CreatorView.vue";
 
-import {CreatorClient, CreatorDto} from "@/creator-client"
-import { reactive } from 'vue'
-
-let list: CreatorDto[];
-
 export default {
   name: "CreatorView",
-
+  props: ['creators'],
   async mounted() {
     console.log(`the component is now mounted.`)
-    let client = new CreatorClient();
-    list = await client.creators();
-    console.log(list);
+
   }
 }
 
@@ -44,9 +37,9 @@ export default {
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr v-for="(item, index) in creators">
         <th scope="row">1</th>
-        <td>Cell</td>
+        <td>{{item.name}}</td>
         <td>Cell</td>
         <td>Cell</td>
         <td>Cell</td>
