@@ -1,16 +1,17 @@
-<script lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import CreatorView from "@/views/CreatorView.vue";
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 
-export default {
-  name: "CreatorView",
-  props: ['creators'],
-  async mounted() {
-    console.log(`the component is now mounted.`)
+  defineProps(['creatorsProp'])
+  const searchValue = ref("");
 
+  function onInput(event: any)
+  {
+    let text = event.target.value
+    console.log(text);
   }
-}
-
+  watch(searchValue, async (newSearchValue) => {
+    //console.log(newSearchValue);
+  })
 </script>
 <template>
   <main class="container">
@@ -24,7 +25,9 @@ export default {
     </nav>
     <h1>.NET Content Creators</h1>
     <div class="grid">
-      <div><input type="search" id="search" name="search" placeholder="Search"></div>
+      <div>
+        <input id="search" name="search" placeholder="Search" type="search" v-model="searchValue" @input="$emit('searchValueInput', $event.target.value)">
+      </div>
     </div>
     <table role="grid">
       <thead>
@@ -37,26 +40,28 @@ export default {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, index) in creators">
-        <th scope="row">1</th>
-        <td>{{item.name}}</td>
-        <td>Cell</td>
-        <td>Cell</td>
-        <td>Cell</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Cell</td>
-        <td>Cell</td>
-        <td>Cell</td>
-        <td>Cell</td>
+      <tr v-for="(item, index) in creatorsProp">
+        <th scope="row">{{ index + 1 }}</th>
+        <td>-</td>
+        <td>{{ item.name }}</td>
+        <td>
+          <span v-for="(link, index) in item.links" :key="link.url">
+            <span v-if="index === (item.links.length-1)">
+              <a :href="link.url">{{ link.label }}</a>
+            </span>
+            <span v-if="index != (item.links.length-1)">
+              <a :href="link.url">{{ link.label }}</a> ,
+            </span>
+          </span>
+        </td>
+        <td>-</td>
       </tr>
       </tbody>
     </table>
-    <p>This list is based on the following GitHub Repository: <a href="https://github.com/matthiasjost/dotnet-content-creators">matthiasjost/dotnet-content-creators</a></p>
+    <p>This list is based on the following GitHub Repository: <a
+        href="https://github.com/matthiasjost/dotnet-content-creators">matthiasjost/dotnet-content-creators</a></p>
   </main>
 </template>
-
 
 <style scoped>
 
