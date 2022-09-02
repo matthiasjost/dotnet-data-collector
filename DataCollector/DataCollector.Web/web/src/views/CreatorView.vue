@@ -2,15 +2,18 @@
 import { RouterLink, RouterView } from 'vue-router'
 import CreatorView from "@/views/CreatorView.vue";
 
-import { CreatorClient } from "@/creator-client"
+import {CreatorClient, CreatorDto} from "@/creator-client"
+import { reactive } from 'vue'
+
+let list: CreatorDto[];
 
 export default {
   name: "CreatorView",
 
-  mounted() {
+  async mounted() {
     console.log(`the component is now mounted.`)
-    var client = new CreatorClient();
-    var list = client.creators();
+    let client = new CreatorClient();
+    list = await client.creators();
     console.log(list);
   }
 }
