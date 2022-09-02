@@ -32,3 +32,4 @@
 /DataCollector/DataCollector.Data/obj/DataCollector.Data.csproj.nuget.dgspec.json
 /DataCollector/DataCollector.Data/obj/*
 /DataCollector/DataCollector.Data/obj/project.assets.json
+/DataCollector/DataCollector.Web/web/src/assets/build/*
