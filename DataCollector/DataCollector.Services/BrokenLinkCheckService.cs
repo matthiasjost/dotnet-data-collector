@@ -37,9 +37,7 @@ namespace DataCollector.Services
             finally
             {
                 ResponseTime = stopWatch.Elapsed;
-
             }
-            return true;
         }
     }
 }

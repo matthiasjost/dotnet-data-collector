@@ -32,7 +32,7 @@ namespace DataCollector.Core
                     channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label});
                 }
 
-                var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels };
+                var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels, CountryOrSection = creatorDto.CountryOrSection };
 
                 if (creatorFound == null)
                 {
@@ -189,6 +189,8 @@ namespace DataCollector.Core
                     if (row.RowIndex != 0)
                     {
                         var creator = new CreatorDto();
+
+                        creator.CountryOrSection = table.Title;
 
                         foreach (CellDto cell in row.Cells)
                         {

@@ -10,7 +10,6 @@ public interface ICreatorListService
     void PrintCreators();
     List<CreatorDto> MapTableToCreators(List<TableDto> listOfTables);
     public Task<List<CreatorDto>> FillDtoListByDatabase();
-
     public Task<List<CreatorDto>> FillDtoListByDatabase(string searchValue);
     Task CheckBrokenLinks();
 }

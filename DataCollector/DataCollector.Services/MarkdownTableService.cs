@@ -25,7 +25,6 @@ namespace DataCollector.Services
             TableNumber++;
             TableList.Add(new TableDto() { Title = tableLiterals.Last() });
             TableList[TableNumber - 1].Rows = new List<RowDto>();
-
         }
         private void NextRow()
         {
@@ -51,9 +50,7 @@ namespace DataCollector.Services
             {
                 if (block is HeadingBlock headingBlock)
                 {
-                    string tableLiteral = ProcessInLineElementHeader(headingBlock.Inline);
-                    tableStringLiterals.Add(tableLiteral);
-
+                    ExtractLiteralsFromTableHeading(headingBlock, tableStringLiterals);
                 }
                 else if (block is Table table)
                 {
@@ -63,6 +60,20 @@ namespace DataCollector.Services
             }
 
             return TableList;
+        }
+
+        private static void ExtractLiteralsFromTableHeading(HeadingBlock headingBlock, List<string> tableStringLiterals)
+        {
+            if (headingBlock.Inline is ContainerInline containerInline)
+            {
+                if (containerInline.FirstChild is LiteralInline literalInline)
+                {
+                    string tableLiteral = literalInline.Content.Text.Substring(literalInline.Content.Start,
+                        literalInline.Content.End - literalInline.Content.Start + 1);
+
+                    tableStringLiterals.Add(tableLiteral);
+                }
+            }
         }
 
         private void ProcessTable(Table table, List<string> tableLiterals)
@@ -110,34 +121,6 @@ namespace DataCollector.Services
             {
                 ProcessInLineElement(inlineElement);
             }
-        }
-
-        private string ProcessInLineElementHeader(Inline inlineElement)
-        {
-            switch (inlineElement)
-            {
-                case LinkInline linkInlineElement:
-                {
-                    
-                    break;
-                }
-                case ContainerInline containerInline:
-                {
-                    if (containerInline.FirstChild is LiteralInline literalInline)
-                    {
-                        string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
-                        return literalValue;
-                    }
-                    break;
-                }
-                case LiteralInline literalInline:
-                {
-                    string literalValue = literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.End - literalInline.Content.Start + 1);
-
-                    break;
-                }
-            }
-            return string.Empty;
         }
 
         private void ProcessInLineElement(Inline inlineElement)

@@ -38,13 +38,6 @@ namespace DataCollector.Core
 
             await _creatorListService.AddCreatorsToDb();
             _creatorListService.PrintCreators();
-            
-            //await _creatorListService.AddFeedUrlsFromHtml();
-            //await _creatorListService.PrintCreatorsFromDb();
-            //await _creatorListService.CheckBrokenLinks();
-
-            //var youTubeService = new YouTubeApiService();
-            //youTubeService.GetVideo();
         }
     }
 }

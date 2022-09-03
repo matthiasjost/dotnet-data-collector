@@ -30,7 +30,7 @@ namespace DataCollector.CollectorWorker
 
                 await _collector.Run();
 
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(100000, stoppingToken);
             }
         }
     }

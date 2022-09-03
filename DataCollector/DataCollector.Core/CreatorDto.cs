@@ -9,6 +9,7 @@ namespace DataCollector.Core
     {
         public string Name { get; set; }
         public List<LinkDto> Links { get; set; }
+        public string CountryOrSection { get; set; }
 
         public CreatorDto()
         {

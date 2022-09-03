@@ -25,7 +25,6 @@
       items.creators = await client.creators()
     }
 
-
     console.log(searchValue);
     console.log(items.creators);
   });
