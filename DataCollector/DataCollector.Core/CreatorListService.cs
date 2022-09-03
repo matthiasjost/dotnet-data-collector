@@ -126,56 +126,46 @@ namespace DataCollector.Core
 
         public async Task<List<CreatorDto>> FillDtoListByDatabase()
         {
-            
-            List<CreatorEntity> listOfCreatorEntities = await _creatorRepository.GetAllItems();
-
-            foreach (CreatorEntity creatorEntity in listOfCreatorEntities)
-            {
-                CreatorDto creatorDto = new CreatorDto()
-                {
-                    Name = creatorEntity.Name,
-                };
-
-                foreach (ChannelEntity channel in creatorEntity.Channels)
-                {
-                    LinkDto linkDto = new LinkDto();
-
-                    linkDto.Label = channel.Label;
-                    linkDto.Url = channel.Url;
-
-                    creatorDto.Links.Add(linkDto);
-
-                }
-                ListOfCreatorDtos.Add(creatorDto);
-            }
-            return ListOfCreatorDtos;
+            return await FillDtoListByDatabase(string.Empty);
         }
 
         public async Task<List<CreatorDto>> FillDtoListByDatabase(string searchValue)
         {
+            List<CreatorEntity> listOfCreatorEntities = new List<CreatorEntity>();
 
-            List<CreatorEntity> listOfCreatorEntities = await _creatorRepository.GetItems(searchValue);
-
+            if (searchValue == string.Empty)
+            {
+                listOfCreatorEntities = await _creatorRepository.GetAllItems();
+            }
+            else
+            {
+                listOfCreatorEntities = await _creatorRepository.GetItems(searchValue);
+            }
+            
             foreach (CreatorEntity creatorEntity in listOfCreatorEntities)
             {
-                CreatorDto creatorDto = new CreatorDto()
-                {
-                    Name = creatorEntity.Name,
-                };
-
-                foreach (ChannelEntity channel in creatorEntity.Channels)
-                {
-                    LinkDto linkDto = new LinkDto();
-
-                    linkDto.Label = channel.Label;
-                    linkDto.Url = channel.Url;
-
-                    creatorDto.Links.Add(linkDto);
-
-                }
-                ListOfCreatorDtos.Add(creatorDto);
+                CreatorDto creatorDtoItem = MapEntityToDto(creatorEntity);
+                ListOfCreatorDtos.Add(creatorDtoItem);
             }
             return ListOfCreatorDtos;
+        }
+
+        private CreatorDto MapEntityToDto(CreatorEntity creatorEntity)
+        {
+            CreatorDto creatorDto = new CreatorDto()
+            {
+                Name = creatorEntity.Name,
+                CountryOrSection = creatorEntity.CountryOrSection,
+            };
+
+            foreach (ChannelEntity channel in creatorEntity.Channels)
+            {
+                LinkDto linkDto = new LinkDto();
+                linkDto.Label = channel.Label;
+                linkDto.Url = channel.Url;
+                creatorDto.Links.Add(linkDto);
+            }
+            return creatorDto;
         }
 
         public List<CreatorDto> MapTableToCreators(List<TableDto> listOfTables)

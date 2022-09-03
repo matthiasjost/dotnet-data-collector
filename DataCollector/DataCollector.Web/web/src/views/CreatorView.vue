@@ -42,7 +42,7 @@ import { ref, watch } from 'vue'
       <tbody>
       <tr v-for="(item, index) in creatorsProp">
         <th scope="row">{{ index + 1 }}</th>
-        <td>-</td>
+        <td>{{ item.countryOrSection }}</td>
         <td>{{ item.name }}</td>
         <td>
           <span v-for="(link, index) in item.links" :key="link.url">

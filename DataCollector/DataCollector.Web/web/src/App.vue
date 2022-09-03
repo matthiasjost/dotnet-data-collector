@@ -2,7 +2,7 @@
   import { reactive, ref, watch } from 'vue'
   import { RouterLink, RouterView } from 'vue-router'
   import CreatorView from "@/views/CreatorView.vue";
-  import {Client, CreatorDto} from "@/creator-client"
+  import {Client } from "@/creator-client"
 
   const items = reactive({ creators: new Array() })
   const searchValue = ref({})
