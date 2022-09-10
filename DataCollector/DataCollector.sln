@@ -13,7 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.CollectorWork
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Services.Tests", "DataCollector.Services.Tests\DataCollector.Services.Tests.csproj", "{40291C79-C89F-438A-B37D-D7B9F41159AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector.Web", "DataCollector.Web\DataCollector.Web.csproj", "{2DBE0158-D422-4FD7-8923-C1018FED795A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Web", "DataCollector.Web\DataCollector.Web.csproj", "{2DBE0158-D422-4FD7-8923-C1018FED795A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClientGeneratorNSwag", "ApiClientGeneratorNSwag\ApiClientGeneratorNSwag.csproj", "{535BE1CC-03EB-41E8-9332-24DB49BC1673}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC1F5EB0-00E5-45BA-BF10-FD387AE17AAF}"
+	ProjectSection(SolutionItems) = preProject
+		package-lock.json = package-lock.json
+		package.json = package.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +53,10 @@ Global
 		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DBE0158-D422-4FD7-8923-C1018FED795A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535BE1CC-03EB-41E8-9332-24DB49BC1673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535BE1CC-03EB-41E8-9332-24DB49BC1673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535BE1CC-03EB-41E8-9332-24DB49BC1673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535BE1CC-03EB-41E8-9332-24DB49BC1673}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

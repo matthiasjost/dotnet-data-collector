@@ -36,6 +36,7 @@ import { ref, watch } from 'vue'
         <th scope="col">Country</th>
         <th scope="col">Name</th>
         <th scope="col">Channels</th>
+        <th scope="col">Tags</th>
         <th scope="col">Last Check</th>
       </tr>
       </thead>
@@ -44,6 +45,7 @@ import { ref, watch } from 'vue'
         <th scope="row">{{ index + 1 }}</th>
         <td>{{ item.countryOrSection }}</td>
         <td>{{ item.name }}</td>
+
         <td>
           <span v-for="(link, index) in item.links" :key="link.url">
             <span v-if="index === (item.links.length-1)">
@@ -51,6 +53,16 @@ import { ref, watch } from 'vue'
             </span>
             <span v-if="index != (item.links.length-1)">
               <a :href="link.url">{{ link.label }}</a>,
+            </span>
+          </span>
+        </td>
+        <td>
+          <span v-for="(link, index) in item.tags" :key="link.url">
+            <span v-if="index === (item.tags.length-1)">
+              {{ item.tags }}
+            </span>
+            <span v-if="index != (item.links.length-1)">
+              {{ item.tags }},
             </span>
           </span>
         </td>
