@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-DataCollector.CollectorWorker-DF961BFC-EC61-4F5F-BFEF-0AF66CB0E87D</UserSecretsId>
+    <UserSecretsId>1bf26f65-f732-4bd2-860b-411fd0042842</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

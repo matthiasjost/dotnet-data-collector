@@ -38,6 +38,8 @@ namespace DataCollector.Core
 
             await _creatorListService.AddCreatorsToDb();
             _creatorListService.PrintCreators();
+
+            await _creatorListService.CheckBrokenLinks();
         }
     }
 }

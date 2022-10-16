@@ -36,3 +36,4 @@
 /DataCollector/node_modules/*
 /DataCollector/ApiClientGeneratorNSwag/bin/*
 /DataCollector/ApiClientGeneratorNSwag/obj/*
+/DataCollector/DataCollector.Data/obj/*
