@@ -14,7 +14,7 @@ namespace DataCollector.Data
             CreatorCollectionName = configuration["MongoDbSettings:CreatorCollectionName"];
             DatabaseName = configuration["MongoDbSettings:DatabaseName"];
 
-            ConnectionString = configuration["mongodb-dotnet-content-creators"];
+            ConnectionString = configuration["azure-cosmos-mongodb-connection-secret"];
             //ConnectionString = configuration["MongoDbSettings:ConnectionString"];
         }
         public string CreatorCollectionName { get; set; }
