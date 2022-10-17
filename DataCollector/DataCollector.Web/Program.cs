@@ -1,3 +1,4 @@
+using Azure.Identity;
 using DataCollector.Core;
 using DataCollector.Data;
 using DataCollector.Services;
@@ -16,6 +17,13 @@ namespace DataCollector.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            if (builder.Environment.IsProduction())
+            {
+                builder.Configuration.AddAzureKeyVault(
+                    new Uri("https://dotnetvault01.vault.azure.net/"),
+                    new DefaultAzureCredential());
+            }
 
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
