@@ -18,7 +18,7 @@ namespace DataCollector.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            if (builder.Environment.IsProduction())
+            //if (builder.Environment.IsProduction())
             {
                 builder.Configuration.AddAzureKeyVault(
                     new Uri("https://dotnetvault01.vault.azure.net/"),

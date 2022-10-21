@@ -7,15 +7,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataCollector.Data
 {
-    public class MongoDbSettings : IMongoDbSettings
+    public class                                            MongoDbSettings : IMongoDbSettings
     {
         public MongoDbSettings(IConfiguration configuration)
         {
             CreatorCollectionName = configuration["MongoDbSettings:CreatorCollectionName"];
             DatabaseName = configuration["MongoDbSettings:DatabaseName"];
 
-            //ConnectionString = configuration["azure-cosmos-mongodb-connection-secret"];
-            ConnectionString = configuration["MongoDbSettings:ConnectionString"];
+            ConnectionString = configuration["azure-cosmos-mongodb-connection-secret"];
+            //ConnectionString = configuration["MongoDbSettings:ConnectionString"];
         }
         public string CreatorCollectionName { get; set; }
         public string DatabaseName { get; set; }
