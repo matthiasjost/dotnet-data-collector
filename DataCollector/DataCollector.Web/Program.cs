@@ -21,7 +21,7 @@ namespace DataCollector.Web
 
             builder.Configuration.AddAzureKeyVault(
                 new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-                new DefaultAzureCredential());
+                new ManagedIdentityCredential());
 
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
