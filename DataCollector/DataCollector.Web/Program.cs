@@ -19,12 +19,19 @@ namespace DataCollector.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //if (builder.Environment.IsProduction())
+            // Retrieve the connection string
+
+
+            string connectionString = builder.Configuration.GetConnectionString("AppConfig");
+
+            builder.Configuration.AddAzureAppConfiguration(options =>
             {
-                builder.Configuration.AddAzureKeyVault(
-                    new Uri("https://dotnetvault01.vault.azure.net/"),
-                    new DefaultAzureCredential());
-            }
+                options.Connect(connectionString)
+                    .ConfigureKeyVault(kv =>
+                    {
+                        kv.SetCredential(new DefaultAzureCredential());
+                    });
+            });
 
 
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
