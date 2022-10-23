@@ -19,11 +19,9 @@ namespace DataCollector.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Configuration.AddAzureAppConfiguration(options => {
-                options.Connect(new Uri("https://dotnet02-app-configruation.azconfig.io"), 
-                        new ManagedIdentityCredential())
-                            .ConfigureKeyVault(kv => { kv.SetCredential(new ManagedIdentityCredential()); });
-            });
+            builder.Configuration.AddAzureKeyVault(
+                new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+                new DefaultAzureCredential());
 
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
