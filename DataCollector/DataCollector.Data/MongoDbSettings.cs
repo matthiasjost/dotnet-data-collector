@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataCollector.Data
 {
-    public class                                            MongoDbSettings : IMongoDbSettings
+    public class MongoDbSettings : IMongoDbSettings
     {
         public MongoDbSettings(IConfiguration configuration)
         {
@@ -20,6 +20,6 @@ namespace DataCollector.Data
         public string CreatorCollectionName { get; set; }
         public string DatabaseName { get; set; }
         public string ConnectionString { get; set; }
- 
+
     }
 }

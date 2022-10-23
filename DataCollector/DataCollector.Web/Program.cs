@@ -2,6 +2,7 @@ using Azure.Identity;
 using DataCollector.Core;
 using DataCollector.Data;
 using DataCollector.Services;
+using Microsoft.Extensions.FileProviders;
 
 namespace DataCollector.Web
 {
@@ -25,6 +26,7 @@ namespace DataCollector.Web
                     new DefaultAzureCredential());
             }
 
+
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
             builder.Services.AddTransient<ICollector, Collector>();
@@ -46,6 +48,11 @@ namespace DataCollector.Web
 
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "web\\dist"))
+            });
 
             app.MapControllers();
 
