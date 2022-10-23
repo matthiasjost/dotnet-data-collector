@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build .\DataCollector --configuration Release
+        run: dotnet build .\DataCollector --configuration Debug
 
       - name: dotnet publish
         run: dotnet publish .\DataCollector -c Release -o ${{env.DOTNET_ROOT}}/myapp
