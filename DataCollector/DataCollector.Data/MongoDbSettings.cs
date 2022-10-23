@@ -13,7 +13,7 @@ namespace DataCollector.Data
         {
             CreatorCollectionName = configuration["MongoDbSettings:CreatorCollectionName"];
             DatabaseName = configuration["MongoDbSettings:DatabaseName"];
-            ConnectionString = configuration["MongoDbSettings:ConnectionString"];
+            ConnectionString = configuration["MongoDbSettingsConnectionString"];
         }
         public string CreatorCollectionName { get; set; }
         public string DatabaseName { get; set; }
