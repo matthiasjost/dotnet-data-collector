@@ -3,6 +3,6 @@
   <PropertyGroup>
     <Controller_SelectedScaffolderID>ApiControllerWithActionsScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>C:\Users\matth\Documents\GitHub\dotnet-data-collector\.github\workflows\main_donet-content-creators.yml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\matth\Documents\GitHub\dotnet-data-collector\DataCollector\DataCollector.Web\Properties\PublishProfiles\DataCollectorWeb20221024201300.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

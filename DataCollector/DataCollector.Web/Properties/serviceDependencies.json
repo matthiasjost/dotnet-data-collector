@@ -9,6 +9,9 @@
       "type": "secrets",
       "connectionId": "VaultUri",
       "dynamicId": null
+    },
+    "apis1": {
+      "type": "apis"
     }
   }
 }
