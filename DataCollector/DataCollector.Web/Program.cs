@@ -22,9 +22,9 @@ namespace DataCollector.Web
             builder.Services.AddLogging();
             builder.Logging.AddConsole();
 
-            builder.Configuration.AddAzureKeyVault(
+            /*builder.Configuration.AddAzureKeyVault(
                 new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-                new ManagedIdentityCredential());
+                new ManagedIdentityCredential());*/
 
             builder.Services.AddSingleton<IMongoDbSettings, MongoDbSettings>();
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
@@ -43,7 +43,6 @@ namespace DataCollector.Web
                 app.UseSwaggerUI();
             }
 
-        
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
