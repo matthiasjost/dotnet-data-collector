@@ -12,4 +12,5 @@ public interface ICreatorListService
     public Task<List<CreatorDto>> FillDtoListByDatabase();
     public Task<List<CreatorDto>> FillDtoListByDatabase(string searchValue);
     Task CheckBrokenLinks();
+    Task PrintOpml();
 }

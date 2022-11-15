@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using AngleSharp.Dom;
 using DataCollector.Data;
 using DataCollector.Services;
@@ -229,6 +230,42 @@ namespace DataCollector.Core
                 }
                 Console.WriteLine();
             }
+        }
+
+        public async Task PrintOpml()
+        {
+            XElement opml =
+                new XElement("opml",
+                    new XAttribute("version", 2),
+                    new XElement("head"),
+                    new XElement("body")
+                );
+
+
+            XElement body = opml.Element("body");
+
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            foreach (var creatorEntity in listOfCreatorEntities)
+            {
+                foreach (var channel in creatorEntity.Channels)
+                {
+                    if (channel.Feeds != null)
+                    {
+                        foreach (var feed in channel.Feeds)
+                        {
+                            body.Add(
+                                new XElement("outline",
+                                    new XAttribute("text", $"{creatorEntity.Name} - {channel.Label} - {feed.Type}"),
+                                    new XAttribute("xmlUrl", feed.Url)));
+
+                        }
+                    }
+                }
+            }
+            opml.Save("opml.xml");
+            string str = File.ReadAllText("opml.xml");
+            Console.WriteLine(str);
         }
     }
 }
