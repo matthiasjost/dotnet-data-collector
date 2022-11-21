@@ -30,7 +30,7 @@ namespace DataCollector.Core
 
                 foreach (LinkDto link in creatorDto.Links)
                 {
-                    channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label});
+                    channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label });
                 }
 
                 var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels, CountryOrSection = creatorDto.CountryOrSection };
@@ -64,7 +64,7 @@ namespace DataCollector.Core
                             {
                                 channel.Feeds = new List<FeedEntity>();
                             }
-                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss"});
+                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss" });
                         }
                     }
                     if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
@@ -142,7 +142,7 @@ namespace DataCollector.Core
             {
                 listOfCreatorEntities = await _creatorRepository.GetItems(searchValue);
             }
-            
+
             foreach (CreatorEntity creatorEntity in listOfCreatorEntities)
             {
                 CreatorDto creatorDtoItem = MapEntityToDto(creatorEntity);
@@ -226,7 +226,7 @@ namespace DataCollector.Core
                     {
                         Console.Write(".");
                     }
-                   
+
                 }
                 Console.WriteLine();
             }
@@ -236,13 +236,18 @@ namespace DataCollector.Core
         {
             XElement opml =
                 new XElement("opml",
-                    new XAttribute("version", 2),
-                    new XElement("head"),
-                    new XElement("body")
-                );
+                    new XAttribute("version", "1.0"),
+                    new XElement("head",
+                        new XElement("title", "dotnet-content-creators")),
+                    new XElement("body",
+                        new XElement("outline",
+                        new XAttribute("text", "dotnet-content-creators"),
+                        new XAttribute("title", "dotnet-content-creators")
+                )));
 
 
             XElement body = opml.Element("body");
+            XElement firstOutline = body.Element("outline");
 
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
 
@@ -250,16 +255,25 @@ namespace DataCollector.Core
             {
                 foreach (var channel in creatorEntity.Channels)
                 {
-                    if (channel.Feeds != null)
+                    if (channel.Label == "Blog")
                     {
-                        foreach (var feed in channel.Feeds)
+                        if (channel.Feeds != null)
                         {
-                            body.Add(
-                                new XElement("outline",
-                                    new XAttribute("text", $"{creatorEntity.Name} - {channel.Label} - {feed.Type}"),
-                                    new XAttribute("xmlUrl", feed.Url)));
-
+                            foreach (var feed in channel.Feeds)
+                            {
+                                if (!feed.Url.EndsWith("/comments/feed/"))
+                                {
+                                    firstOutline.Add(
+                                        new XElement("outline",
+                                            new XAttribute("type", "rss"),
+                                            new XAttribute("text", $"{creatorEntity.Name}"),
+                                            new XAttribute("title", $"{creatorEntity.Name}"),
+                                            new XAttribute("xmlUrl", feed.Url)
+                                        ));
+                                }
+                            }
                         }
+
                     }
                 }
             }
