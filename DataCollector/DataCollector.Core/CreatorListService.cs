@@ -52,49 +52,61 @@ namespace DataCollector.Core
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
             foreach (var creatorEntity in listOfCreatorEntities)
             {
-                var htmlSerivce = new HtmlService();
-                foreach (var channel in creatorEntity.Channels)
-                {
-                    await htmlSerivce.LoadHtmlAndParseFeedUrls(channel.Url);
-                    if (htmlSerivce.ExtractedRssXmlLinks.Count > 0)
-                    {
-                        foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
-                        {
-                            if (channel.Feeds == null)
-                            {
-                                channel.Feeds = new List<FeedEntity>();
-                            }
-                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss" });
-                        }
-                    }
-                    if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
-                    {
-                        foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
-                        {
-                            if (channel.Feeds == null)
-                            {
-                                channel.Feeds = new List<FeedEntity>();
-                            }
-                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Atom" });
-                        }
-                    }
-                    if (htmlSerivce.ExtractedFeedXmlLinks.Count > 0)
-                    {
-                        foreach (var link in htmlSerivce.ExtractedFeedXmlLinks)
-                        {
-                            if (channel.Feeds == null)
-                            {
-                                channel.Feeds = new List<FeedEntity>();
-                            }
-                            channel.Feeds.Add(new FeedEntity { Url = link, Type = "Feed" });
-                        }
-                    }
-                }
-                await _creatorRepository.UpdateById(creatorEntity);
-                Console.Write(".");
+                await AddFeedForCreatorEntity(creatorEntity);
             }
         }
 
+        private async Task AddFeedForCreatorEntity(CreatorEntity creatorEntity)
+        {
+            var htmlSerivce = new HtmlService();
+
+            foreach (var channel in creatorEntity.Channels)
+            {
+                await htmlSerivce.LoadHtmlAndParseFeedUrls(channel.Url);
+
+                if (htmlSerivce.ExtractedRssXmlLinks.Count > 0)
+                {
+                    foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
+                    {
+                        if (channel.Feeds == null)
+                        {
+                            channel.Feeds = new List<FeedEntity>();
+                        }
+
+                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss" });
+                    }
+                }
+
+                /*if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
+                {
+                    foreach (var link in htmlSerivce.ExtractedAtomXmlLinks)
+                    {
+                        if (channel.Feeds == null)
+                        {
+                            channel.Feeds = new List<FeedEntity>();
+                        }
+
+                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Atom" });
+                    }
+                }
+
+                if (htmlSerivce.ExtractedFeedXmlLinks.Count > 0)
+                {
+                    foreach (var link in htmlSerivce.ExtractedFeedXmlLinks)
+                    {
+                        if (channel.Feeds == null)
+                        {
+                            channel.Feeds = new List<FeedEntity>();
+                        }
+
+                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Feed" });
+                    }
+                }*/
+            }
+
+            await _creatorRepository.UpdateById(creatorEntity);
+            Console.Write(".");
+        }
 
 
         public async Task PrintCreatorsFromDb()
@@ -259,18 +271,17 @@ namespace DataCollector.Core
                     {
                         if (channel.Feeds != null)
                         {
-                            foreach (var feed in channel.Feeds)
+                            var feed = channel.Feeds.FirstOrDefault();
+
+                            if (!feed.Url.EndsWith("/comments/feed/"))
                             {
-                                if (!feed.Url.EndsWith("/comments/feed/"))
-                                {
-                                    firstOutline.Add(
-                                        new XElement("outline",
-                                            new XAttribute("type", "rss"),
-                                            new XAttribute("text", $"{creatorEntity.Name}"),
-                                            new XAttribute("title", $"{creatorEntity.Name}"),
-                                            new XAttribute("xmlUrl", feed.Url)
-                                        ));
-                                }
+                                firstOutline.Add(
+                                    new XElement("outline",
+                                        new XAttribute("type", "rss"),
+                                        new XAttribute("text", $"{creatorEntity.Name}"),
+                                        new XAttribute("title", $"{creatorEntity.Name}"),
+                                        new XAttribute("xmlUrl", feed.Url)
+                                    ));
                             }
                         }
 
