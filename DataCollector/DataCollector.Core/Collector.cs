@@ -35,14 +35,14 @@ namespace DataCollector.Core
 
             List<TableDto> tableList = _markdownTableService.GenerateTableByMarkdownString(markdownString);
             List<CreatorDto> creatorDtoList = _creatorListService.MapTableToCreators(tableList);
-
-            await _creatorListService.AddCreatorsToDb();
+            
+            // await _creatorListService.AddCreatorsToDb();
 
             await _creatorListService.AddFeedUrlsFromHtml();
 
             _creatorListService.PrintCreators();
 
-            _creatorListService.PrintOpml();
+            await _creatorListService.PrintOpml();
 
             //await _creatorListService.CheckBrokenLinks();
         }

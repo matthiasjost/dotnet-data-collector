@@ -12,6 +12,6 @@ namespace DataCollector.Data
     {
         public string Url { get; set; }
         public string Label { get; set; }
-        public List<FeedEntity> Feeds { get; set; }
+        public List<FeedEntity> Feeds { get; set; } = new List<FeedEntity>();
     }
 }

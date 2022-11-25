@@ -5,20 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
+using static DataCollector.Services.HtmlService;
 
 namespace DataCollector.Services
 {
     public class HtmlService
     {
-        public List<string> ExtractedRssXmlLinks { get; set; }
-        public List<string> ExtractedAtomXmlLinks { get; set; }
-        public List<string> ExtractedFeedXmlLinks { get; set; }
+        public enum FeedType
+        {
+            LinkTagRssType = 1,
+            LinkTagAtomType = 2,
+            AHrefFeedType = 3
+            
+        }
+        public class FeedUrl
+        {
+
+            public string Url { get; set; }
+            public FeedType Type { get; set; }
+        }
+
+        public List<FeedUrl> FeedUrls { get; set; }
 
         public HtmlService()
         {
-            ExtractedRssXmlLinks = new List<string>();
-            ExtractedAtomXmlLinks = new List<string>();
-            ExtractedFeedXmlLinks = new List<string>();
+            FeedUrls = new List<FeedUrl>();
         }
 
         public async Task LoadHtmlAndParseFeedUrls(string url)
@@ -39,7 +50,7 @@ namespace DataCollector.Services
             using var doc = await context.OpenAsync(req => req.Content(htmlCode));
 
             QueryLinkTags(doc);
-            QueryAnchorTags(doc);
+            QueryAHrefTags(doc);
         }
 
         private void QueryLinkTags(IDocument doc)
@@ -53,17 +64,29 @@ namespace DataCollector.Services
                 if (typeName == "application/rss+xml")
                 {
                     string hrefUrl = link.GetAttribute("href");
-                    ExtractedRssXmlLinks.Add(hrefUrl);
+
+                    FeedUrls.Add(new FeedUrl()
+                    {
+                        Type = FeedType.LinkTagRssType,
+                        Url = hrefUrl
+
+                    });
                 }
                 else if (typeName == "application/atom+xml")
                 {
                     string hrefUrl = link.GetAttribute("href");
-                    ExtractedAtomXmlLinks.Add(hrefUrl);
+
+                    FeedUrls.Add(new FeedUrl()
+                    {
+                        Type = FeedType.LinkTagAtomType,
+                        Url = hrefUrl
+
+                    });
                 }
             }
         }
 
-        private void QueryAnchorTags(IDocument doc)
+        private void QueryAHrefTags(IDocument doc)
         {
             var anchors = doc.QuerySelectorAll("a");
 
@@ -73,7 +96,12 @@ namespace DataCollector.Services
 
                 if (hrefUrl != null && hrefUrl.EndsWith("feed.xml"))
                 {
-                    ExtractedFeedXmlLinks.Add(hrefUrl);
+                    FeedUrls.Add(new FeedUrl()
+                    {
+                        Type = FeedType.AHrefFeedType,
+                        Url = hrefUrl
+
+                    });
                 }
             }
         }

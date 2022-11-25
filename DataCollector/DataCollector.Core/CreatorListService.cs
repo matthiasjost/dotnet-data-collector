@@ -58,56 +58,30 @@ namespace DataCollector.Core
 
         private async Task AddFeedForCreatorEntity(CreatorEntity creatorEntity)
         {
-            var htmlSerivce = new HtmlService();
-
             foreach (var channel in creatorEntity.Channels)
             {
-                await htmlSerivce.LoadHtmlAndParseFeedUrls(channel.Url);
+                channel.Feeds = new List<FeedEntity>();
 
-                if (htmlSerivce.ExtractedRssXmlLinks.Count > 0)
+                HtmlService hService = new HtmlService();
+                await hService.LoadHtmlAndParseFeedUrls(channel.Url);
+
+                if (hService.FeedUrls.Count > 0)
                 {
-                    foreach (var link in htmlSerivce.ExtractedRssXmlLinks)
+                    foreach (HtmlService.FeedUrl feedUrl in hService.FeedUrls)
                     {
-                        if (channel.Feeds == null)
-                        {
-                            channel.Feeds = new List<FeedEntity>();
-                        }
+                      channel.Feeds.Add(new FeedEntity()
+                      {
+                          Url = feedUrl.Url,
+                          Type = feedUrl.Type.ToString()
 
-                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Rss" });
+                      }); 
                     }
                 }
-
-                /*if (htmlSerivce.ExtractedAtomXmlLinks.Count > 0)
-                {
-                    foreach (var link in htmlSerivce.ExtractedAtomXmlLinks)
-                    {
-                        if (channel.Feeds == null)
-                        {
-                            channel.Feeds = new List<FeedEntity>();
-                        }
-
-                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Atom" });
-                    }
-                }
-
-                if (htmlSerivce.ExtractedFeedXmlLinks.Count > 0)
-                {
-                    foreach (var link in htmlSerivce.ExtractedFeedXmlLinks)
-                    {
-                        if (channel.Feeds == null)
-                        {
-                            channel.Feeds = new List<FeedEntity>();
-                        }
-
-                        channel.Feeds.Add(new FeedEntity { Url = link, Type = "Feed" });
-                    }
-                }*/
             }
 
             await _creatorRepository.UpdateById(creatorEntity);
             Console.Write(".");
         }
-
 
         public async Task PrintCreatorsFromDb()
         {
@@ -124,6 +98,7 @@ namespace DataCollector.Core
                 Console.WriteLine();
             }
         }
+
         public void PrintCreators()
         {
             foreach (CreatorDto creator in ListOfCreatorDtos)
@@ -261,30 +236,32 @@ namespace DataCollector.Core
             XElement body = opml.Element("body");
             XElement firstOutline = body.Element("outline");
 
+            if (firstOutline == null)
+            {
+                return; 
+            }
+
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
 
             foreach (var creatorEntity in listOfCreatorEntities)
             {
                 foreach (var channel in creatorEntity.Channels)
                 {
-                    if (channel.Label == "Blog")
+                    if (channel.Feeds != null)
                     {
-                        if (channel.Feeds != null)
+                        var feed = channel.Feeds.FirstOrDefault(f =>
+                            !f.Url.Contains("youtube.com")
+                            && !f.Url.EndsWith("/comments/feed/"));
+                        if (feed != null)
                         {
-                            var feed = channel.Feeds.FirstOrDefault();
-
-                            if (!feed.Url.EndsWith("/comments/feed/"))
-                            {
-                                firstOutline.Add(
-                                    new XElement("outline",
-                                        new XAttribute("type", "rss"),
-                                        new XAttribute("text", $"{creatorEntity.Name}"),
-                                        new XAttribute("title", $"{creatorEntity.Name}"),
-                                        new XAttribute("xmlUrl", feed.Url)
-                                    ));
-                            }
+                            firstOutline.Add(
+                                new XElement("outline",
+                                    new XAttribute("type", "rss"),
+                                    new XAttribute("text", $"{creatorEntity.Name}"),
+                                    new XAttribute("title", $"{creatorEntity.Name}"),
+                                    new XAttribute("xmlUrl", feed.Url)
+                                ));
                         }
-
                     }
                 }
             }

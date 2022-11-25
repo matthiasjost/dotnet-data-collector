@@ -9,7 +9,7 @@ namespace DataCollector.Data
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Name { get; set; }
-        public List<ChannelEntity> Channels { get; set; }
+        public List<ChannelEntity> Channels { get; set; } = new List<ChannelEntity>();
         public string CountryOrSection { get; set; }
         public List<string> Tags { get; set; }
     }
