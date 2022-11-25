@@ -245,13 +245,19 @@ namespace DataCollector.Core
 
             foreach (var creatorEntity in listOfCreatorEntities)
             {
-                foreach (var channel in creatorEntity.Channels)
+                var filteredChannels = creatorEntity.Channels.Where(c => c.Label == "Blog");
+
+                foreach (var channel in filteredChannels)
                 {
                     if (channel.Feeds != null)
                     {
-                        var feed = channel.Feeds.FirstOrDefault(f =>
+
+                        var filteredFeeds = channel.Feeds.Where(f =>
                             !f.Url.Contains("youtube.com")
                             && !f.Url.EndsWith("/comments/feed/"));
+
+                        var feed = filteredFeeds.FirstOrDefault();
+
                         if (feed != null)
                         {
                             firstOutline.Add(

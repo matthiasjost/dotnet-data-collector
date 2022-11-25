@@ -39,18 +39,27 @@ namespace DataCollector.Services
 
             if (await httpService.TryUrlToString())
             {
-                await ParseRssAndAtomXmlLinks(httpService.ResponseString);
+                var config = Configuration.Default;
+                using var context = BrowsingContext.New(config);
+
+                using var doc = await context.OpenAsync(req => req.Content(httpService.ResponseString));
+
+                QueryLinkTags(doc);
+                QueryAHrefTags(doc);
+
+                foreach (var feedUrl in FeedUrls)
+                {
+                    if (!Uri.IsWellFormedUriString(feedUrl.Url, UriKind.Absolute))
+                    {
+                        Uri result = null;
+                        if (Uri.TryCreate(new Uri(url), feedUrl.Url, out result))
+                        {
+                            Console.WriteLine(result);
+                        }
+                        feedUrl.Url = result.AbsoluteUri;
+                    }
+                }
             }
-        }
-        public async Task ParseRssAndAtomXmlLinks(string htmlCode)
-        {
-            var config = Configuration.Default;
-            using var context = BrowsingContext.New(config);
-
-            using var doc = await context.OpenAsync(req => req.Content(htmlCode));
-
-            QueryLinkTags(doc);
-            QueryAHrefTags(doc);
         }
 
         private void QueryLinkTags(IDocument doc)
@@ -94,7 +103,7 @@ namespace DataCollector.Services
             {
                 var hrefUrl = anchor.GetAttribute("href");
 
-                if (hrefUrl != null && hrefUrl.EndsWith("feed.xml"))
+                if (hrefUrl != null && (hrefUrl.EndsWith("feed.xml") || hrefUrl.EndsWith("feed.rss")))
                 {
                     FeedUrls.Add(new FeedUrl()
                     {
