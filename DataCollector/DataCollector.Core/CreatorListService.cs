@@ -60,21 +60,24 @@ namespace DataCollector.Core
         {
             foreach (var channel in creatorEntity.Channels)
             {
-                channel.Feeds = new List<FeedEntity>();
-
-                HtmlService hService = new HtmlService();
-                await hService.LoadHtmlAndParseFeedUrls(channel.Url);
-
-                if (hService.FeedUrls.Count > 0)
+                if (channel.Label == "Blog")
                 {
-                    foreach (HtmlService.FeedUrl feedUrl in hService.FeedUrls)
-                    {
-                      channel.Feeds.Add(new FeedEntity()
-                      {
-                          Url = feedUrl.Url,
-                          Type = feedUrl.Type.ToString()
+                    channel.Feeds = new List<FeedEntity>();
 
-                      }); 
+                    HtmlService hService = new HtmlService();
+                    await hService.LoadHtmlAndParseFeedUrls(channel.Url);
+
+                    if (hService.FeedUrls.Count > 0)
+                    {
+                        foreach (HtmlService.FeedUrl feedUrl in hService.FeedUrls)
+                        {
+                            channel.Feeds.Add(new FeedEntity()
+                            {
+                                Url = feedUrl.Url,
+                                Type = feedUrl.Type.ToString()
+
+                            });
+                        }
                     }
                 }
             }
@@ -243,7 +246,10 @@ namespace DataCollector.Core
 
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
 
-            foreach (var creatorEntity in listOfCreatorEntities)
+            var listOfCreatorEntitiesOrdered = listOfCreatorEntities.OrderBy(s => s.Name);
+
+
+            foreach (var creatorEntity in listOfCreatorEntitiesOrdered)
             {
                 var filteredChannels = creatorEntity.Channels.Where(c => c.Label == "Blog");
 
@@ -260,13 +266,28 @@ namespace DataCollector.Core
 
                         if (feed != null)
                         {
+                            string feedType = "rss";
+
+                            if (feed.Type == HtmlService.FeedType.LinkTagAtomType.ToString())
+                            {
+                                feedType = "atom";
+                            }
+                            else if (feed.Type == HtmlService.FeedType.LinkTagRssType.ToString())
+                            {
+                                feedType = "rss";
+                            }
+                            else
+                            {
+                                feedType = "rss";
+                            }
+
                             firstOutline.Add(
                                 new XElement("outline",
-                                    new XAttribute("type", "rss"),
-                                    new XAttribute("text", $"{creatorEntity.Name}"),
+                                    new XAttribute("type", feedType),
                                     new XAttribute("title", $"{creatorEntity.Name}"),
                                     new XAttribute("xmlUrl", feed.Url)
                                 ));
+
                         }
                     }
                 }

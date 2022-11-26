@@ -103,7 +103,7 @@ namespace DataCollector.Services
             {
                 var hrefUrl = anchor.GetAttribute("href");
 
-                if (hrefUrl != null && (hrefUrl.EndsWith("feed.xml") || hrefUrl.EndsWith("feed.rss")))
+                if (hrefUrl != null && (hrefUrl.EndsWith("feed.xml") || hrefUrl.EndsWith("feed.rss") || hrefUrl.EndsWith("rss.xml") || hrefUrl.EndsWith("atom.xml")))
                 {
                     FeedUrls.Add(new FeedUrl()
                     {

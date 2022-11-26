@@ -2,7 +2,7 @@ namespace DataCollector.Services.Tests
 {
     public class HtmlServiceTests
     {
-        [Fact]
+        /*[Fact]
         public async void TestIfExtractUrls()
         {
             var httpService = new HttpService();
@@ -54,6 +54,6 @@ namespace DataCollector.Services.Tests
             {
                 Assert.True(false, "Failed to load from Url!");
             }
-        }
+        }*/
     }
 }
