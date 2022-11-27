@@ -58,8 +58,17 @@ namespace DataCollector.Core
 
         private async Task AddFeedForCreatorEntity(CreatorEntity creatorEntity)
         {
+            
             foreach (var channel in creatorEntity.Channels)
             {
+                if (channel.Label == "Blog RSS")
+                {
+                    channel.Feeds.Add(new FeedEntity()
+                    {
+                        Type = HtmlService.FeedType.BlogRssTag.ToString(),
+                        Url = channel.Url
+                    });
+                }
                 if (channel.Label == "Blog")
                 {
                     channel.Feeds = new List<FeedEntity>();
@@ -251,7 +260,7 @@ namespace DataCollector.Core
 
             foreach (var creatorEntity in listOfCreatorEntitiesOrdered)
             {
-                var filteredChannels = creatorEntity.Channels.Where(c => c.Label == "Blog");
+                var filteredChannels = creatorEntity.Channels.Where(c => c.Label == "Blog" || c.Label == "Blog RSS");
 
                 foreach (var channel in filteredChannels)
                 {

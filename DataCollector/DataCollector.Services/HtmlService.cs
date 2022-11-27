@@ -15,7 +15,8 @@ namespace DataCollector.Services
         {
             LinkTagRssType = 1,
             LinkTagAtomType = 2,
-            AHrefFeedType = 3
+            AHrefFeedType = 3,
+            BlogRssTag = 4,
             
         }
         public class FeedUrl
