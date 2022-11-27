@@ -260,7 +260,7 @@ namespace DataCollector.Core
 
             foreach (var creatorEntity in listOfCreatorEntitiesOrdered)
             {
-                var filteredChannels = creatorEntity.Channels.Where(c => c.Label == "Blog" || c.Label == "Blog RSS");
+                var filteredChannels = creatorEntity.Channels.Where(c => (c.Label == "Blog" && c.Feeds.Count > 0) || c.Label == "Blog RSS");
 
                 foreach (var channel in filteredChannels)
                 {
