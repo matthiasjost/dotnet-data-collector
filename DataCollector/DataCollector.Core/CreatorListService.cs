@@ -69,7 +69,7 @@ namespace DataCollector.Core
                         Url = channel.Url
                     });
                 }
-                if (channel.Label == "Blog")
+                else if (channel.Label == "Blog")
                 {
                     channel.Feeds = new List<FeedEntity>();
 
@@ -87,6 +87,34 @@ namespace DataCollector.Core
 
                             });
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No feed found for '{channel.Label}' - '{channel.Url}'");
+                    }
+                }
+                else if (channel.Label == "YouTube")
+                {
+                    channel.Feeds = new List<FeedEntity>();
+
+                    HtmlService hService = new HtmlService();
+                    await hService.LoadHtmlAndParseFeedUrls(channel.Url);
+
+                    if (hService.FeedUrls.Count > 0)
+                    {
+                        foreach (HtmlService.FeedUrl feedUrl in hService.FeedUrls)
+                        {
+                            channel.Feeds.Add(new FeedEntity()
+                            {
+                                Url = feedUrl.Url,
+                                Type = feedUrl.Type.ToString()
+
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No feed found for '{channel.Label}' - '{channel.Url}'");
                     }
                 }
             }
@@ -231,6 +259,79 @@ namespace DataCollector.Core
             }
         }
 
+        public async Task PrintOpmlYouTube()
+        {
+            XElement opml =
+                  new XElement("opml",
+                      new XAttribute("version", "1.0"),
+                      new XElement("head",
+                          new XElement("title", "dotnet-youtube")),
+                      new XElement("body",
+                          new XElement("outline",
+                          new XAttribute("text", "dotnet-youtube"),
+                          new XAttribute("title", "dotnet-youtube")
+                  )));
+
+
+            XElement body = opml.Element("body");
+            XElement firstOutline = body.Element("outline");
+
+            if (firstOutline == null)
+            {
+                return;
+            }
+
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            var listOfCreatorEntitiesOrdered = listOfCreatorEntities.OrderBy(s => s.Name);
+
+
+            foreach (var creatorEntity in listOfCreatorEntitiesOrdered)
+            {
+                var filteredChannels = creatorEntity.Channels.Where(c => (c.Label == "YouTube" && c.Feeds.Count > 0));
+
+                foreach (var channel in filteredChannels)
+                {
+                    if (channel.Feeds != null)
+                    {
+
+                        var filteredFeeds = channel.Feeds;
+
+                        var feed = filteredFeeds.FirstOrDefault();
+
+                        if (feed != null)
+                        {
+                            string feedType = "rss";
+
+                            if (feed.Type == HtmlService.FeedType.LinkTagAtomType.ToString())
+                            {
+                                feedType = "atom";
+                            }
+                            else if (feed.Type == HtmlService.FeedType.LinkTagRssType.ToString())
+                            {
+                                feedType = "rss";
+                            }
+                            else
+                            {
+                                feedType = "rss";
+                            }
+
+                            firstOutline.Add(
+                                new XElement("outline",
+                                    new XAttribute("type", feedType),
+                                    new XAttribute("title", $"{creatorEntity.Name}"),
+                                    new XAttribute("xmlUrl", feed.Url)
+                                ));
+
+                        }
+                    }
+                }
+            }
+            opml.Save("youtube-opml.xml");
+            string str = File.ReadAllText("youtube-opml.xml");
+            Console.WriteLine(str);
+        }
+
         public async Task PrintOpml()
         {
             XElement opml =
@@ -301,8 +402,8 @@ namespace DataCollector.Core
                     }
                 }
             }
-            opml.Save("opml.xml");
-            string str = File.ReadAllText("opml.xml");
+            opml.Save("blog-opml.xml");
+            string str = File.ReadAllText("blog-opml.xml");
             Console.WriteLine(str);
         }
     }
