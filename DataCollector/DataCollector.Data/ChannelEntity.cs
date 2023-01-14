@@ -10,6 +10,8 @@ namespace DataCollector.Data
 {
     public class ChannelEntity
     {
+        public int Id { get; set; }
+
         public string Url { get; set; }
         public string Label { get; set; }
         public List<FeedEntity> Feeds { get; set; } = new List<FeedEntity>();

@@ -11,6 +11,6 @@ namespace DataCollector.Data
         public string Name { get; set; }
         public List<ChannelEntity> Channels { get; set; } = new List<ChannelEntity>();
         public string CountryOrSection { get; set; }
-        public List<string> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

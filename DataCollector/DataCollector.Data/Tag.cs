@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataCollector.Data
 {
-    public class FeedEntity
+    public class Tag
     {
         public int Id { get; set; }
-        public string Url { get; set; }
-
-        public string Type { get; set; }
-
+        public string Name { get; set; }
     }
 }
