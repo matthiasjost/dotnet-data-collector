@@ -11,7 +11,7 @@ namespace DataCollector.Data
 {
     public class CreatorContext : DbContext
     {
-        public DbSet<CreatorEntity> Creator { get; set; }
+        public DbSet<CreatorEntity?> Creator { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

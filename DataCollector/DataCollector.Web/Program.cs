@@ -30,7 +30,7 @@ namespace DataCollector.Web
             builder.Services.AddTransient<ICreatorRepository, CreatorRepository>();
             builder.Services.AddTransient<ICollector, Collector>();
 
-            builder.Services.AddTransient<ICreatorListService, CreatorListService>();
+            builder.Services.AddTransient<ICreatorListService, CreatorListServiceEf>();
             builder.Services.AddTransient<IHttpService, HttpService>();
             builder.Services.AddTransient<IMarkdownTableService, MarkdownTableService>();
 
