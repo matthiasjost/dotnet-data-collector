@@ -8,7 +8,7 @@ namespace DataCollector.Services.MarkdownDto
     {
         public int ColumnIndex { get; set; }
         public List<string> TextLiterals { get; set; } = new List<string>();
-        public List<LinkDto> Links { get; set; }
+        public List<ChannelDto> Links { get; set; }
 
         public CellDto(int columnIndex)
         {

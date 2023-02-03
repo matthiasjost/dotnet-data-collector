@@ -14,6 +14,7 @@
     console.log("searchValueInputChange");
     console.log(value);
   }
+
   watch(searchValue, async (newSearchValue) => {
 
     if(newSearchValue.toString().length != 0)

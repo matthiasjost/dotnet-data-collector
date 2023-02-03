@@ -28,7 +28,7 @@ namespace DataCollector.Core
 
                 var channels = new List<ChannelEntity>();
 
-                foreach (LinkDto link in creatorDto.Links)
+                foreach (ChannelDto link in creatorDto.Channels)
                 {
                     channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label });
                 }
@@ -144,7 +144,7 @@ namespace DataCollector.Core
             foreach (CreatorDto creator in ListOfCreatorDtos)
             {
                 Console.Write(creator.Name);
-                foreach (LinkDto link in creator.Links)
+                foreach (ChannelDto link in creator.Channels)
                 {
                     Console.Write($" '{link.Label}' = '{link.Url}'");
                 }
@@ -188,10 +188,10 @@ namespace DataCollector.Core
 
             foreach (ChannelEntity channel in creatorEntity.Channels)
             {
-                LinkDto linkDto = new LinkDto();
-                linkDto.Label = channel.Label;
-                linkDto.Url = channel.Url;
-                creatorDto.Links.Add(linkDto);
+                ChannelDto channelDto = new ChannelDto();
+                channelDto.Label = channel.Label;
+                channelDto.Url = channel.Url;
+                creatorDto.Channels.Add(channelDto);
             }
             return creatorDto;
         }
@@ -218,10 +218,10 @@ namespace DataCollector.Core
                             }
                             else if (cell.ColumnIndex == 1)
                             {
-                                creator.Links = new List<LinkDto>();
-                                foreach (LinkDto link in cell.Links)
+                                creator.Channels = new List<ChannelDto>();
+                                foreach (ChannelDto link in cell.Links)
                                 {
-                                    creator.Links.Add(link);
+                                    creator.Channels.Add(link);
                                 }
                             }
                         }

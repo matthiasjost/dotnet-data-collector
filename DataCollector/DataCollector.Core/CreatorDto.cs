@@ -8,13 +8,13 @@ namespace DataCollector.Core
     public class CreatorDto
     {
         public string Name { get; set; }
-        public List<LinkDto> Links { get; set; }
+        public List<ChannelDto> Channels { get; set; }
         public string CountryOrSection { get; set; }
         public List<string> Tags { get; set; }
 
         public CreatorDto()
         {
-            Links = new List<LinkDto>();
+            Channels = new List<ChannelDto>();
         }
     }
 }

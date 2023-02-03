@@ -132,15 +132,22 @@ export class Client {
     }
 }
 
-export interface CreatorDto {
-    name?: string | undefined;
-    links?: LinkDto[] | undefined;
-    countryOrSection?: string | undefined;
-}
-
-export interface LinkDto {
+export interface ChannelDto {
     label?: string | undefined;
     url?: string | undefined;
+    feeds?: FeedDto[] | undefined;
+}
+
+export interface CreatorDto {
+    name?: string | undefined;
+    channels?: ChannelDto[] | undefined;
+    countryOrSection?: string | undefined;
+    tags?: string[] | undefined;
+}
+
+export interface FeedDto {
+    url?: string | undefined;
+    type?: string | undefined;
 }
 
 export interface WeatherForecast {

@@ -47,12 +47,12 @@ import { ref, watch } from 'vue'
         <td>{{ item.name }}</td>
 
         <td>
-          <span v-for="(link, index) in item.links" :key="link.url">
-            <span v-if="index === (item.links.length-1)">
-              <a :href="link.url">{{ link.label }}</a>
+          <span v-for="(channel, index) in item.channels" :key="channel.url">
+            <span v-if="index === (item.channels.length-1)">
+              <a :href="channel.url">{{ channel.label }}</a>
             </span>
-            <span v-if="index != (item.links.length-1)">
-              <a :href="link.url">{{ link.label }}</a>,
+            <span v-if="index != (item.channels.length-1)">
+              <a :href="channel.url">{{ channel.label }}</a>,
             </span>
           </span>
         </td>

@@ -131,10 +131,10 @@ namespace DataCollector.Services
                 {
                     if (TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links == null)
                     {
-                        TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<LinkDto>();
+                        TableList[TableNumber - 1].Rows[TableRowNumber - 1].Cells[TableCellNumber - 1].Links = new List<ChannelDto>();
                     }
 
-                    var linkDto = new LinkDto
+                    var linkDto = new ChannelDto
                     {
                         Url = linkInlineElement.Url
                     };
