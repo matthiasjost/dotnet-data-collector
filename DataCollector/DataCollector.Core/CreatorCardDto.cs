@@ -31,8 +31,6 @@ namespace DataCollector.Core
 
         public CreatorCardDto()
         {
-            channels.Add(new Channel() { name = "", url = ""});
-            feeds.Add(new Feed() { type = "rss", url = "" });
         }
     }
 
