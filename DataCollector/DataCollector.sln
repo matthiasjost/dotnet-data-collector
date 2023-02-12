@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Services.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector.Web", "DataCollector.Web\DataCollector.Web.csproj", "{2DBE0158-D422-4FD7-8923-C1018FED795A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClientGeneratorNSwag", "ApiClientGeneratorNSwag\ApiClientGeneratorNSwag.csproj", "{535BE1CC-03EB-41E8-9332-24DB49BC1673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClientGeneratorNSwag", "ApiClientGeneratorNSwag\ApiClientGeneratorNSwag.csproj", "{535BE1CC-03EB-41E8-9332-24DB49BC1673}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC1F5EB0-00E5-45BA-BF10-FD387AE17AAF}"
 	ProjectSection(SolutionItems) = preProject

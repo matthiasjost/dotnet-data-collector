@@ -45,6 +45,7 @@ namespace DataCollector.Core
             await _creatorListService.PrintOpml();
 
             await _creatorListService.PrintOpmlYouTube();
+            await _creatorListService.PrintCreatorCards();
             //await _creatorListService.CheckBrokenLinks();
         }
     }

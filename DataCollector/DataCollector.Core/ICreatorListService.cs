@@ -14,4 +14,5 @@ public interface ICreatorListService
     Task CheckBrokenLinks();
     Task PrintOpml();
     Task PrintOpmlYouTube();
+    Task PrintCreatorCards();
 }

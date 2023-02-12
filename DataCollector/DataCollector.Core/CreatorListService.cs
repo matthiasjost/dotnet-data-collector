@@ -6,6 +6,7 @@ using AngleSharp.Dom;
 using DataCollector.Data;
 using DataCollector.Services;
 using DataCollector.Services.MarkdownDto;
+using Newtonsoft.Json;
 
 namespace DataCollector.Core
 {
@@ -33,7 +34,17 @@ namespace DataCollector.Core
                     channels.Add(new ChannelEntity() { Url = link.Url, Label = link.Label });
                 }
 
-                var creator = new CreatorEntity { Name = creatorDto.Name, Channels = channels, CountryOrSection = creatorDto.CountryOrSection };
+                string tagCommaSeparated = "";
+                if (creatorDto.Tags != null && creatorDto.Tags.Count == 1)
+                {
+                    tagCommaSeparated = creatorDto.Tags[0];
+                }
+
+                List<string> tagsList = new List<string>();
+                tagsList.Add(tagCommaSeparated);
+
+                    var creator = new CreatorEntity
+                    { Name = creatorDto.Name, Channels = channels, CountryOrSection = creatorDto.CountryOrSection, Tags = tagsList };
 
                 if (creatorFound == null)
                 {
@@ -58,7 +69,7 @@ namespace DataCollector.Core
 
         private async Task AddFeedForCreatorEntity(CreatorEntity creatorEntity)
         {
-            
+
             foreach (var channel in creatorEntity.Channels)
             {
                 if (channel.Label == "Blog RSS")
@@ -135,6 +146,7 @@ namespace DataCollector.Core
                 {
                     Console.Write($" '{channel.Url}'");
                 }
+
                 Console.WriteLine();
             }
         }
@@ -148,6 +160,7 @@ namespace DataCollector.Core
                 {
                     Console.Write($" '{link.Label}' = '{link.Url}'");
                 }
+
                 Console.WriteLine();
             }
         }
@@ -175,6 +188,7 @@ namespace DataCollector.Core
                 CreatorDto creatorDtoItem = MapEntityToDto(creatorEntity);
                 ListOfCreatorDtos.Add(creatorDtoItem);
             }
+
             return ListOfCreatorDtos;
         }
 
@@ -193,6 +207,7 @@ namespace DataCollector.Core
                 channelDto.Url = channel.Url;
                 creatorDto.Channels.Add(channelDto);
             }
+
             return creatorDto;
         }
 
@@ -224,8 +239,15 @@ namespace DataCollector.Core
                                     creator.Channels.Add(link);
                                 }
                             }
+                            else if (cell.ColumnIndex == 2)
+                            {
+                                string tagsCommaSeparated = cell.GetPlainText();
+                                creator.Tags = new List<string>();
+                                creator.Tags.Add(tagsCommaSeparated);
+                            }
+
+                            ListOfCreatorDtos.Add(creator);
                         }
-                        ListOfCreatorDtos.Add(creator);
                     }
                 }
             }
@@ -247,7 +269,8 @@ namespace DataCollector.Core
                     var successFlag = await brokenLinkCheckService.PerformCheck(channel.Url);
                     if (successFlag == false)
                     {
-                        Console.WriteLine($"Label: '{creatorEntity.Name}', successFlag = '{successFlag}', '{channel.Url}'");
+                        Console.WriteLine(
+                            $"Label: '{creatorEntity.Name}', successFlag = '{successFlag}', '{channel.Url}'");
                     }
                     else
                     {
@@ -255,6 +278,7 @@ namespace DataCollector.Core
                     }
 
                 }
+
                 Console.WriteLine();
             }
         }
@@ -262,15 +286,15 @@ namespace DataCollector.Core
         public async Task PrintOpmlYouTube()
         {
             XElement opml =
-                  new XElement("opml",
-                      new XAttribute("version", "1.0"),
-                      new XElement("head",
-                          new XElement("title", "dotnet-youtube")),
-                      new XElement("body",
-                          new XElement("outline",
-                          new XAttribute("text", "dotnet-youtube"),
-                          new XAttribute("title", "dotnet-youtube")
-                  )));
+                new XElement("opml",
+                    new XAttribute("version", "1.0"),
+                    new XElement("head",
+                        new XElement("title", "dotnet-youtube")),
+                    new XElement("body",
+                        new XElement("outline",
+                            new XAttribute("text", "dotnet-youtube"),
+                            new XAttribute("title", "dotnet-youtube")
+                        )));
 
 
             XElement body = opml.Element("body");
@@ -327,6 +351,7 @@ namespace DataCollector.Core
                     }
                 }
             }
+
             opml.Save("youtube-opml.xml");
             string str = File.ReadAllText("youtube-opml.xml");
             Console.WriteLine(str);
@@ -341,9 +366,9 @@ namespace DataCollector.Core
                         new XElement("title", "dotnet-content-creators")),
                     new XElement("body",
                         new XElement("outline",
-                        new XAttribute("text", "dotnet-content-creators"),
-                        new XAttribute("title", "dotnet-content-creators")
-                )));
+                            new XAttribute("text", "dotnet-content-creators"),
+                            new XAttribute("title", "dotnet-content-creators")
+                        )));
 
 
             XElement body = opml.Element("body");
@@ -351,7 +376,7 @@ namespace DataCollector.Core
 
             if (firstOutline == null)
             {
-                return; 
+                return;
             }
 
             var listOfCreatorEntities = await _creatorRepository.GetAllItems();
@@ -361,7 +386,8 @@ namespace DataCollector.Core
 
             foreach (var creatorEntity in listOfCreatorEntitiesOrdered)
             {
-                var filteredChannels = creatorEntity.Channels.Where(c => (c.Label == "Blog" && c.Feeds.Count > 0) || c.Label == "Blog RSS");
+                var filteredChannels = creatorEntity.Channels.Where(c =>
+                    (c.Label == "Blog" && c.Feeds.Count > 0) || c.Label == "Blog RSS");
 
                 foreach (var channel in filteredChannels)
                 {
@@ -402,9 +428,87 @@ namespace DataCollector.Core
                     }
                 }
             }
+
             opml.Save("blog-opml.xml");
             string str = File.ReadAllText("blog-opml.xml");
             Console.WriteLine(str);
+        }
+
+        public async Task PrintCreatorCards()
+        {
+            var listOfCreatorEntities = await _creatorRepository.GetAllItems();
+
+            var listOfCreatorEntitiesOrdered = listOfCreatorEntities.OrderBy(s => s.Name);
+
+            foreach (CreatorEntity creatorEntity in listOfCreatorEntitiesOrdered)
+            {
+                CreatorCardDto dto = new CreatorCardDto();
+
+                dto.name = creatorEntity.Name;
+                dto.country = creatorEntity.CountryOrSection;
+
+                if (creatorEntity.Tags != null && creatorEntity.Tags.Count == 1)
+                {
+                    dto.tags = creatorEntity.Tags[0];
+                }
+      
+                foreach (ChannelEntity channelEntity in creatorEntity.Channels)
+                {
+                    switch (channelEntity.Label)
+                    {
+                        case "Twitter":
+                            dto.socials.twitter = channelEntity.Url;
+                            break;
+                        case "LinkedIn":
+                            dto.socials.linkedin = channelEntity.Url;
+                            break;
+                        case "Mastodon":
+                            dto.socials.mastodon = channelEntity.Url;
+                            break;
+                        case "GitHub":
+                            dto.socials.github = channelEntity.Url;
+                            break;
+                        case "YouTube":
+                            dto.socials.youtube = channelEntity.Url;
+                            break;
+                        default:
+                            dto.channels.Add(new Channel
+                            {
+                                name = channelEntity.Label,
+                                url = channelEntity.Url
+                            });
+                            break;
+                    }
+                }
+
+                foreach (ChannelEntity channel in creatorEntity.Channels)
+                {
+                    foreach (FeedEntity feedEntity in channel.Feeds)
+                    {
+                        dto.feeds.Add(new Feed()
+                        {
+                            type = feedEntity.Type,
+                            url = feedEntity.Url
+                        });
+                    }
+              
+                }
+                
+                string jsonData = JsonConvert.SerializeObject(dto, Formatting.Indented);
+                string fileNameCreatorPart = creatorEntity?.Name;
+                fileNameCreatorPart = fileNameCreatorPart.Replace(' ', '-');
+                
+                fileNameCreatorPart = fileNameCreatorPart.ToLower();
+                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                {
+                    fileNameCreatorPart = fileNameCreatorPart.Replace(c, '_');
+
+
+                }
+
+                await File.WriteAllTextAsync($"creator-cards\\{fileNameCreatorPart}.json", jsonData, Encoding.UTF8);
+
+            }
         }
     }
 }
