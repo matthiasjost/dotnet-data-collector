@@ -40,3 +40,4 @@
 /DataCollector/DataCollector.Data/obj/DataCollector.Data.csproj.nuget.dgspec.json
 /DataCollector/DataCollector.Data/obj/project.assets.json
 /DataCollector/DataCollector.CollectorWorker/creator-cards/*
+/DataCollector/DataCollector.CollectorWorker/other-cards/*

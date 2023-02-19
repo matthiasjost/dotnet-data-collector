@@ -21,8 +21,12 @@ namespace DataCollector.Core
     public class CreatorCardDto
     {
         public string name { get; set; } = "";
-        public string country { get; set; } = "";
+
+        public string sectionTitle { get; set; } = "";
+        public string countryCode { get; set; } = "";
         public string slogan { get; set; } = "";
+
+        public string type { get; set; } = "";
         public string bio { get; set; } = "";
         public string tags { get; set; } = "";
         public Socials socials { get; set; } = new Socials();
@@ -41,5 +45,6 @@ namespace DataCollector.Core
         public string twitter { get; set; } = "";
         public string github { get; set; } = "";
         public string mastodon { get; set; } = "";
+        public string sessionize { get; set; } = "";
     }
 }

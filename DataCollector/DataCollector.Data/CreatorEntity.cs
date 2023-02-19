@@ -10,7 +10,11 @@ namespace DataCollector.Data
         public string Id { get; set; }
         public string Name { get; set; }
         public List<ChannelEntity> Channels { get; set; } = new List<ChannelEntity>();
-        public string CountryOrSection { get; set; }
+
+
+        public string Type { get; set; }
+        public string SectionTitle { get; set; }
+        public string CountryCode { get; set; }
         public List<string> Tags { get; set; }
         public string Slogan { get; set; }
         public string Bio { get; set; }

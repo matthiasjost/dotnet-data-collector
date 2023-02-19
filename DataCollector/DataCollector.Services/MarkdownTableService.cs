@@ -18,12 +18,12 @@ namespace DataCollector.Services
         private int TableRowNumber { get; set; }
         private int TableCellNumber { get; set; }
 
-        private void NextTable(List<string> tableLiterals)
+        private void NextTable(List<string> tableLiterals, List<string> tableHtmlLiterals)
         {
             TableRowNumber = 0;
             TableCellNumber = 0;
             TableNumber++;
-            TableList.Add(new TableDto() { Title = tableLiterals.Last() });
+            TableList.Add(new TableDto() { Title = tableLiterals.LastOrDefault(), CountrySvgHtmlCode = tableHtmlLiterals.LastOrDefault()});
             TableList[TableNumber - 1].Rows = new List<RowDto>();
         }
         private void NextRow()
@@ -45,6 +45,7 @@ namespace DataCollector.Services
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             var document = Markdown.Parse(markdown, pipeline);
             List<string> tableStringLiterals = new List<string>();
+            List<string> tableHtmlLiterals = new List<string>();
 
             foreach (var block in document)
             {
@@ -52,14 +53,25 @@ namespace DataCollector.Services
                 {
                     ExtractLiteralsFromTableHeading(headingBlock, tableStringLiterals);
                 }
+                else if (block is HtmlBlock htmlBlock)
+                {
+                    ExtractSvgFileName(htmlBlock, tableHtmlLiterals);
+                }
                 else if (block is Table table)
                 {
-                    ProcessTable(table, tableStringLiterals);
+                    ProcessTable(table, tableStringLiterals, tableHtmlLiterals);
                     tableStringLiterals = new List<string>();
+                    tableHtmlLiterals = new List<string>();
                 }
             }
 
             return TableList;
+        }
+
+        private void ExtractSvgFileName(HtmlBlock htmlBlock, List<string> tableStringLiterals)
+        {
+            string firstHtmlLine = htmlBlock.Lines.ToString();
+            tableStringLiterals.Add(firstHtmlLine);
         }
 
         private static void ExtractLiteralsFromTableHeading(HeadingBlock headingBlock, List<string> tableStringLiterals)
@@ -76,9 +88,9 @@ namespace DataCollector.Services
             }
         }
 
-        private void ProcessTable(Table table, List<string> tableLiterals)
+        private void ProcessTable(Table table, List<string> tableLiterals, List<string> tableHtmlLiterals)
         {
-            NextTable(tableLiterals);
+            NextTable(tableLiterals, tableHtmlLiterals);
 
             foreach (var block in table)
             {

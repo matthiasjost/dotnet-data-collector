@@ -21,6 +21,7 @@
       <outline type="atom" title="Bojan Veljanovski" xmlUrl="https://bojanveljanovski.com/feed/feed.xml" />
       <outline type="rss" title="Brendan Enrick" xmlUrl="https://brendoneus.com/feed.xml" />
       <outline type="rss" title="Bryan Hogan" xmlUrl="https://nodogmablog.bryanhogan.net/index.xml" />
+      <outline type="rss" title="Camilo Terevinto" xmlUrl="https://www.camiloterevinto.com/rss.xml" />
       <outline type="rss" title="Chris Sainty" xmlUrl="https://chrissainty.com/rss/" />
       <outline type="rss" title="Chris Woodruff" xmlUrl="https://woodruff.dev/feed/" />
       <outline type="rss" title="Christian Nagel" xmlUrl="https://csharp.christiannagel.com/feed/" />
@@ -119,8 +120,10 @@
       <outline type="rss" title="Omid Ahmadpour" xmlUrl="https://medium.com/feed/@omid-ahmadpour" />
       <outline type="rss" title="Oskar Dudycz" xmlUrl="https://event-driven.io/rss.xml" />
       <outline type="rss" title="Paul Michaels" xmlUrl="https://pmichaels.net/rss.xml" />
+      <outline type="rss" title="Peter Foot" xmlUrl="https://inthehand.com/feed/" />
       <outline type="rss" title="Pierre Belin" xmlUrl="https://goatreview.com/rss/" />
       <outline type="rss" title="Rahul Rai" xmlUrl="https://thecloudblog.net/index.xml" />
+      <outline type="atom" title="Renato Golia" xmlUrl="https://renatogolia.com/feed.xml" />
       <outline type="rss" title="Rick Strahl" xmlUrl="https://feeds.feedburner.com/rickstrahl" />
       <outline type="rss" title="Rijwan Ansari" xmlUrl="https://rijsat.com/feed/" />
       <outline type="rss" title="Rob Bos" xmlUrl="https://devopsjournal.io/blog/atom.xml" />

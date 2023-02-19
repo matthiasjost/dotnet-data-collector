@@ -44,7 +44,7 @@ namespace DataCollector.Core
                 tagsList.Add(tagCommaSeparated);
 
                     var creator = new CreatorEntity
-                    { Name = creatorDto.Name, Channels = channels, CountryOrSection = creatorDto.CountryOrSection, Tags = tagsList };
+                    { Name = creatorDto.Name, Channels = channels, Type = creatorDto.Type.ToString(), SectionTitle = creatorDto.Section, CountryCode = creatorDto.Country, Tags = tagsList };
 
                 if (creatorFound == null)
                 {
@@ -197,7 +197,7 @@ namespace DataCollector.Core
             CreatorDto creatorDto = new CreatorDto()
             {
                 Name = creatorEntity.Name,
-                CountryOrSection = creatorEntity.CountryOrSection,
+                Country = creatorEntity.CountryCode,
             };
 
             foreach (ChannelEntity channel in creatorEntity.Channels)
@@ -223,7 +223,18 @@ namespace DataCollector.Core
                     {
                         var creator = new CreatorDto();
 
-                        creator.CountryOrSection = table.Title;
+                        if (table.CountrySvgHtmlCode == null)
+                        {
+                            creator.Type = CreatorType.OTHER;
+                            creator.Section = table.Title;
+                        }
+                        else
+                        {
+                            creator.Type = CreatorType.CREATOR;
+
+
+                            creator.Country = SvgNameToIsoCode(table.CountrySvgHtmlCode);
+                        }
 
                         foreach (CellDto cell in row.Cells)
                         {
@@ -253,6 +264,13 @@ namespace DataCollector.Core
             }
 
             return ListOfCreatorDtos;
+        }
+
+        private string SvgNameToIsoCode(string tableCountrySvgHtmlCode)
+        {
+            tableCountrySvgHtmlCode = tableCountrySvgHtmlCode.Replace("<img src=\"4x3/", "");
+            tableCountrySvgHtmlCode = tableCountrySvgHtmlCode.Replace(".svg\" height=\"35\">", "");
+            return tableCountrySvgHtmlCode;
         }
 
         public async Task CheckBrokenLinks()
@@ -445,7 +463,9 @@ namespace DataCollector.Core
                 CreatorCardDto dto = new CreatorCardDto();
 
                 dto.name = creatorEntity.Name;
-                dto.country = creatorEntity.CountryOrSection;
+                dto.countryCode = creatorEntity.CountryCode;
+                dto.sectionTitle = creatorEntity.SectionTitle;
+                dto.type = creatorEntity.Type;
 
                 if (creatorEntity.Tags != null && creatorEntity.Tags.Count == 1)
                 {
@@ -506,7 +526,16 @@ namespace DataCollector.Core
 
                 }
 
-                await File.WriteAllTextAsync($"creator-cards\\{fileNameCreatorPart}.json", jsonData, Encoding.UTF8);
+                if (dto.type == "CREATOR")
+                {
+                    await File.WriteAllTextAsync($"creator-cards\\{fileNameCreatorPart}.json", jsonData, Encoding.UTF8);
+                }
+                else
+                {
+
+                    await File.WriteAllTextAsync($"other-cards\\{fileNameCreatorPart}.json", jsonData, Encoding.UTF8);
+                }
+            
 
             }
         }

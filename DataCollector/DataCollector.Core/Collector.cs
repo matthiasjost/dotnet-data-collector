@@ -30,7 +30,7 @@ namespace DataCollector.Core
         {
             HttpClient httpClient = new HttpClient();
 
-            /*var httpResponseMessage = await httpClient.GetAsync("https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md");
+            var httpResponseMessage = await httpClient.GetAsync("https://raw.githubusercontent.com/matthiasjost/dotnet-content-creators/main/README.md");
             string markdownString = await httpResponseMessage.Content.ReadAsStringAsync();
 
             List<TableDto> tableList = _markdownTableService.GenerateTableByMarkdownString(markdownString);
@@ -38,7 +38,7 @@ namespace DataCollector.Core
             
             await _creatorListService.AddCreatorsToDb();
 
-            await _creatorListService.AddFeedUrlsFromHtml();*/
+            await _creatorListService.AddFeedUrlsFromHtml();
 
             _creatorListService.PrintCreators();
 
